@@ -1,16 +1,15 @@
 "use client";
 import { Button, Spinner } from "flowbite-react";
+import { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
 
-type SubmitButtonProps = {
-  children: React.ReactNode;
-};
+type SubmitButtonProps = ComponentProps<typeof Button>;
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ children }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({ children, ...props }) => {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" aria-disabled={pending} color="dark">
+    <Button type="submit" aria-disabled={pending} {...props}>
       {pending ? <Spinner /> : children}
     </Button>
   );

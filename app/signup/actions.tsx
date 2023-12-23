@@ -13,7 +13,7 @@ const signInSchema = z.object({
     .min(PASSWORD_MIN_LENGTH, "Password must be at least 12 characters long"),
 });
 
-async function handleSignUp(_: { errors: {} }, fromData: FormData) {
+async function handleSignUp(fromData: FormData) {
   const fields = signInSchema.safeParse({
     email: fromData.get("email"),
     password: fromData.get("password"),

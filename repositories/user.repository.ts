@@ -10,4 +10,13 @@ const getUsersByCred = async ({ cred }: { cred: User["cred"] }) => {
   return db.select().from(users).where(eq(users.cred, cred));
 };
 
-export { createUser, getUsersByCred };
+const getHashByCred = async ({ cred }: { cred: User["cred"] }) => {
+  const rows = await db
+    .select({ hash: users.hash })
+    .from(users)
+    .where(eq(users.cred, cred));
+
+  return rows[0]?.hash;
+};
+
+export { createUser, getUsersByCred, getHashByCred };
