@@ -1,5 +1,5 @@
 "use server";
-import { MIN_PASSWORD_LENGTH } from "@/constants/password.constants";
+import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { encrypt, generateSecureHash } from "@/helpers/crypto.helpers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -8,7 +8,7 @@ const signInSchema = z.object({
   email: z.string().email({ message: "Invalid email" }),
   password: z
     .string()
-    .min(MIN_PASSWORD_LENGTH, "Password must be at least 12 characters long"),
+    .min(PASSWORD_MIN_LENGTH, "Password must be at least 12 characters long"),
 });
 
 async function handleSignIn(_: { errors: {} }, fromData: FormData) {

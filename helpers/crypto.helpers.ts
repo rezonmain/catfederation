@@ -1,15 +1,15 @@
 import * as crypto from "crypto";
 import * as argon2 from "argon2";
-import { ALGORITHM, SECRET } from "@/constants/crypto.constants";
+import { CRYPTO_ALGORITHM, CRYPTO_SECRET } from "@/constants/crypto.constants";
 import Encrypted from "@/helpers/Encrypted";
 
 const generateSecureHash = (password: string) => {
   return argon2.hash(password);
 };
 
-const encrypt = (s: string, secret = SECRET) => {
+const encrypt = (s: string, secret = CRYPTO_SECRET) => {
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(ALGORITHM, secret, iv);
+  const cipher = crypto.createCipheriv(CRYPTO_ALGORITHM, secret, iv);
   const encrypted = Buffer.concat([cipher.update(s), cipher.final()]);
 
   return new Encrypted({
@@ -20,10 +20,10 @@ const encrypt = (s: string, secret = SECRET) => {
 
 const decrypt = (
   { iv, content }: { iv: string; content: string },
-  secret = SECRET
+  secret = CRYPTO_ALGORITHM
 ) => {
   const decipher = crypto.createDecipheriv(
-    ALGORITHM,
+    CRYPTO_ALGORITHM,
     secret,
     Buffer.from(iv, "hex")
   );

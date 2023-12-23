@@ -3,7 +3,7 @@ import { useFormState } from "react-dom";
 import { TextInput, Card } from "flowbite-react";
 import { CgMail, CgKey } from "react-icons/cg";
 import { SubmitButton } from "@/ui/submit-button";
-import { MIN_PASSWORD_LENGTH } from "@/constants/password.constants";
+import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { handleSignIn } from "./actions";
 import { FieldMessage } from "@/ui/field-message";
 
@@ -36,7 +36,7 @@ export default function SignInPage() {
               type="password"
               name="password"
               placeholder="Password"
-              minLength={MIN_PASSWORD_LENGTH}
+              minLength={PASSWORD_MIN_LENGTH}
               required
             />
             <FieldMessage message={state?.errors?.password} />
