@@ -1,8 +1,13 @@
+import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
-import { NewUser, users } from "@/db/schema";
+import { NewUser, User, users } from "@/db/schema";
 
 const createUser = async ({ cred, hash }: NewUser) => {
   await db.insert(users).values({ cred, hash });
 };
 
-export { createUser };
+const getUsersByCred = async ({ cred }: { cred: User["cred"] }) => {
+  return db.select().from(users).where(eq(users.cred, cred));
+};
+
+export { createUser, getUsersByCred };

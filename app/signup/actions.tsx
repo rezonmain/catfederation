@@ -1,7 +1,8 @@
 "use server";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { generateHash, generateSecureHash } from "@/helpers/crypto.helpers";
-import { createUser } from "@/repositories/user.repository";
+import { empty } from "@/helpers/utils.helpers";
+import { createUser, getUsersByCred } from "@/repositories/user.repository";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -12,7 +13,7 @@ const signInSchema = z.object({
     .min(PASSWORD_MIN_LENGTH, "Password must be at least 12 characters long"),
 });
 
-async function handleSignIn(_: { errors: {} }, fromData: FormData) {
+async function handleSignUp(_: { errors: {} }, fromData: FormData) {
   const fields = signInSchema.safeParse({
     email: fromData.get("email"),
     password: fromData.get("password"),
@@ -24,10 +25,20 @@ async function handleSignIn(_: { errors: {} }, fromData: FormData) {
     };
   }
 
-  const hash = await generateSecureHash(fields.data.password);
   const cred = generateHash(fields.data.email);
+  const users = await getUsersByCred({ cred });
+
+  if (!empty(users)) {
+    return {
+      errors: {
+        email: ["Account with this email already exists"],
+      },
+    };
+  }
+
+  const hash = await generateSecureHash(fields.data.password);
   await createUser({ cred, hash });
   redirect("/");
 }
 
-export { handleSignIn };
+export { handleSignUp };
