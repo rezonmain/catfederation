@@ -1,5 +1,5 @@
 import { SECRET } from "@/constants/crypto.constants";
-import { decrypt } from "./crypto";
+import { decrypt } from "@/helpers/crypto.helpers";
 
 class Encrypted {
   private plain?: string = undefined;

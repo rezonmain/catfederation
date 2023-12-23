@@ -1,6 +1,6 @@
 "use server";
 import { MIN_PASSWORD_LENGTH } from "@/constants/password.constants";
-import { encrypt, generateSecureHash } from "@/helpers/crypto";
+import { encrypt, generateSecureHash } from "@/helpers/crypto.helpers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 

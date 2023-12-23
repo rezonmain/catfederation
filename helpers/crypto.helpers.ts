@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import * as argon2 from "argon2";
 import { ALGORITHM, SECRET } from "@/constants/crypto.constants";
-import Encrypted from "./Encrypted";
+import Encrypted from "@/helpers/Encrypted";
 
 const generateSecureHash = (password: string) => {
   return argon2.hash(password);
