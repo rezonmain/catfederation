@@ -1,6 +1,7 @@
 "use server";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
-import { encrypt, generateSecureHash } from "@/helpers/crypto.helpers";
+import { generateHash, generateSecureHash } from "@/helpers/crypto.helpers";
+import { createUser } from "@/repositories/user.repository";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -24,7 +25,8 @@ async function handleSignIn(_: { errors: {} }, fromData: FormData) {
   }
 
   const hash = await generateSecureHash(fields.data.password);
-  const cred = encrypt(fields.data.email);
+  const cred = generateHash(fields.data.email);
+  await createUser({ cred, hash });
   redirect("/");
 }
 

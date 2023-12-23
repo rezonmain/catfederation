@@ -1,10 +1,18 @@
 import * as crypto from "crypto";
 import * as argon2 from "argon2";
-import { CRYPTO_ALGORITHM, CRYPTO_SECRET } from "@/constants/crypto.constants";
+import {
+  CRYPTO_ALGORITHM,
+  CRYPTO_HASH_ALGORITHM,
+  CRYPTO_SECRET,
+} from "@/constants/crypto.constants";
 import Encrypted from "@/helpers/Encrypted";
 
 const generateSecureHash = (password: string) => {
   return argon2.hash(password);
+};
+
+const generateHash = (s: string) => {
+  return crypto.createHash(CRYPTO_HASH_ALGORITHM).update(s).digest("hex");
 };
 
 const encrypt = (s: string, secret = CRYPTO_SECRET) => {
@@ -44,4 +52,4 @@ const verify = async (hash: string, password: string) => {
   }
 };
 
-export { generateSecureHash, verify, encrypt, decrypt };
+export { generateSecureHash, verify, encrypt, decrypt, generateHash };
