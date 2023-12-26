@@ -3,26 +3,23 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { APP_DOMAIN } from "@/constants/app.constants";
 import { ROUTE_AUTH_NEW } from "@/constants/route.constants";
-import {
-  generateCred,
-  generateAccountCreationChallengeToken,
-  generateSecureHash,
-} from "@/helpers/crypto.helpers";
+import { generateCred, generateSecureHash } from "@/helpers/crypto.helpers";
 import { AccountCreationUrlParams } from "@/types/auth.types";
 import { renderAccountCreationTemplate } from "@/templates/account_creation.email";
 import { sendEmail } from "@/helpers/mail.helpers";
 import {
-  createAccountCreationEntry,
-  deleteAccountCreationsByCred,
-  getAccountCreationExpiresAt,
   getAccountCreationsByCred,
+  createAccountCreationEntry,
+  getAccountCreationExpiresAt,
+  deleteAccountCreationsByCred,
 } from "@/repositories/accountCreation.repository";
-import {
-  expired,
-  getAccountCreationExpirationISODate,
-} from "@/helpers/time.helpers";
+import { expired } from "@/helpers/time.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import { createUser } from "@/repositories/user.repository";
+import {
+  getAccountCreationExpirationISODate,
+  generateAccountCreationChallengeToken,
+} from "@/helpers/accountCreations.helpers";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -72,15 +69,11 @@ async function handleNewAccount(fromData: FormData) {
   const challengeToken = generateAccountCreationChallengeToken();
   const expiresAt = getAccountCreationExpirationISODate();
 
-  try {
-    await createAccountCreationEntry({
-      cred,
-      challengeToken,
-      expiresAt,
-    });
-  } catch {
-    return;
-  }
+  await createAccountCreationEntry({
+    cred,
+    challengeToken,
+    expiresAt,
+  });
 
   const url = generateAccountCreationUrl({
     e: fields.data.email,
