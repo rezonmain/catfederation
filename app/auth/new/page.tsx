@@ -73,7 +73,7 @@ const ChallengeForm: React.FC<ChallengeFormProps> = ({
         name="password"
         type="password"
         minLength={PASSWORD_MIN_LENGTH}
-        placeholder="Password"
+        placeholder="New password"
         icon={CgKey}
         required
       />
