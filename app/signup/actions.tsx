@@ -1,6 +1,7 @@
 "use server";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { generateHash, generateSecureHash } from "@/helpers/crypto.helpers";
+import { sendEmail } from "@/helpers/mail.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import { createUser, getUsersByCred } from "@/repositories/user.repository";
 import { redirect } from "next/navigation";
@@ -13,7 +14,7 @@ const signInSchema = z.object({
     .min(PASSWORD_MIN_LENGTH, "Password must be at least 12 characters long"),
 });
 
-async function handleSignUp(fromData: FormData) {
+async function handleSignUp(_: unknown, fromData: FormData) {
   const fields = signInSchema.safeParse({
     email: fromData.get("email"),
     password: fromData.get("password"),
@@ -37,7 +38,12 @@ async function handleSignUp(fromData: FormData) {
   }
 
   const hash = await generateSecureHash(fields.data.password);
-  await createUser({ cred, hash });
+  // await createUser({ cred, hash });
+  await sendEmail({
+    to: fields.data.email,
+    subject: "Welcome to the app",
+    text: "Welcome to the app",
+  });
   redirect("/");
 }
 

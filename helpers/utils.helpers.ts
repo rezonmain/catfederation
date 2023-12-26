@@ -5,4 +5,8 @@ const empty = (val: string | unknown[] | object | null | undefined) => {
   return false;
 };
 
-export { empty };
+const nil = (val: string | unknown[] | object | null | undefined) => {
+  return val === null || val === undefined;
+};
+
+export { empty, nil };

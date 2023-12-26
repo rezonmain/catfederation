@@ -21,10 +21,6 @@ type SignInErrors = {
 
 type SignInState = {
   errors: SignInErrors;
-  fields?: {
-    email: string;
-    password: string;
-  };
 } | void;
 
 async function handleSignIn(
@@ -48,11 +44,7 @@ async function handleSignIn(
   if (empty(users)) {
     return {
       errors: {
-        account: ["User not found"],
-      },
-      fields: {
-        email: fields.data.email,
-        password: fields.data.password,
+        password: ["Unable to login with provided credentials"],
       },
     };
   }

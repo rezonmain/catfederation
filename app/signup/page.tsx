@@ -1,5 +1,6 @@
 "use client";
 import { useFormState } from "react-dom";
+import Link from "next/link";
 import { TextInput, Card } from "flowbite-react";
 import { CgMail, CgKey } from "react-icons/cg";
 import { SubmitButton } from "@/ui/submit-button";
@@ -15,7 +16,7 @@ export default function SignUpPage() {
       <Card>
         <form className="flex flex-col gap-8" action={formAction}>
           <h1 className="tracking-wide text-3xl font-bold pb-6">
-            Create a new account
+            Create a new account for cat_federation
           </h1>
           <div className="flex flex-col gap-2">
             <TextInput
@@ -43,6 +44,7 @@ export default function SignUpPage() {
             <small className="text-gray-400">
               We strongly recommend using a password manager
             </small>
+            <Link href="/signin">Sign in</Link>
           </div>
           <SubmitButton>Submit</SubmitButton>
         </form>

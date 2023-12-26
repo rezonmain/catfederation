@@ -13,16 +13,21 @@
     "db:migrate": "dotenv drizzle-kit generate:mysql"
   },
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
     "@planetscale/database": "^1.13.0",
+    "@react-email/components": "^0.0.12",
+    "@react-email/render": "^0.0.10",
     "argon2": "^0.31.2",
     "drizzle-orm": "^0.29.1",
     "flowbite-react": "^0.7.2",
     "next": "14.0.4",
+    "nodemailer": "^6.9.7",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
