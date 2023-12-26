@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
 function useDisclosure() {
   const [isOpen, setIsOpen] = useState(false);
