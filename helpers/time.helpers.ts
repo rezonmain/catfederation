@@ -16,4 +16,8 @@ const ISONow = (): string => {
   return new Date().toISOString();
 };
 
-export { getAccountCreationExpirationISODate, ISONow };
+const expired = (date: string): boolean => {
+  return new Date(date) < new Date();
+};
+
+export { getAccountCreationExpirationISODate, ISONow, expired };
