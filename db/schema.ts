@@ -40,12 +40,12 @@ export type NewUser = typeof users.$inferInsert;
 
 export const accountCreations = mysqlTable("account_creations", {
   id: serial("id").primaryKey(),
-  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
-    ISONow
-  ),
-  expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
-    getAccountCreationExpirationISODate
-  ),
+  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+    .$defaultFn(ISONow)
+    .notNull(),
+  expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH })
+    .$defaultFn(getAccountCreationExpirationISODate)
+    .notNull(),
   cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
   challengeToken: varchar("challenge_token", {
     length: CRYPTO_FIELDS_LENGTH,
