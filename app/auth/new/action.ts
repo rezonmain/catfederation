@@ -6,15 +6,33 @@ import { ROUTE_AUTH_NEW } from "@/constants/route.constants";
 import {
   generateCred,
   generateAccountCreationChallengeToken,
+  generateSecureHash,
 } from "@/helpers/crypto.helpers";
 import { AccountCreationUrlParams } from "@/types/auth.types";
 import { renderAccountCreationTemplate } from "@/templates/account_creation.email";
 import { sendEmail } from "@/helpers/mail.helpers";
-import { createAccountCreationEntry } from "@/repositories/accountCreation.repository";
-import { getAccountCreationExpirationISODate } from "@/helpers/time.helpers";
+import {
+  createAccountCreationEntry,
+  deleteAccountCreationsByCred,
+  getAccountCreation,
+} from "@/repositories/accountCreation.repository";
+import {
+  ISONow,
+  getAccountCreationExpirationISODate,
+} from "@/helpers/time.helpers";
+import { empty } from "@/helpers/utils.helpers";
+import { createUser } from "@/repositories/user.repository";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
+});
+
+const createAccountSchema = z.object({
+  email: z.string().email({ message: "Please provide a valid email" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  challengeToken: z.string(),
 });
 
 const generateAccountCreationUrl = (params: AccountCreationUrlParams) => {
@@ -65,4 +83,39 @@ async function handleNewAccount(fromData: FormData) {
   redirect("/");
 }
 
-export { handleNewAccount };
+async function handleAccountCreation(formData: FormData) {
+  const fields = createAccountSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+    challengeToken: formData.get("challengeToken"),
+  });
+
+  if (!fields.success) {
+    return {
+      errors: fields.error.flatten().fieldErrors,
+    };
+  }
+
+  const cred = generateCred(fields.data.email);
+  const accountCreations = await getAccountCreation({
+    cred,
+    challengeToken: fields.data.challengeToken,
+  });
+
+  if (empty(accountCreations)) {
+    return; // handle invalid credentials error
+  }
+
+  const accountCreation = accountCreations[0];
+
+  if (accountCreation.expiresAt <= ISONow()) {
+    return; // handle expiration error
+  }
+
+  const hash = await generateSecureHash(fields.data.password);
+
+  await createUser({ cred, hash });
+  await deleteAccountCreationsByCred({ cred });
+}
+
+export { handleNewAccount, handleAccountCreation };
