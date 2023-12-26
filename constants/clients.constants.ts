@@ -1,0 +1,3 @@
+const CLIENTS_ID_LENGTH = 32;
+
+export { CLIENTS_ID_LENGTH };

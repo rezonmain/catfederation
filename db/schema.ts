@@ -1,13 +1,9 @@
-import {
-  CRYPTO_FIELDS_LENGTH,
-  CRYPTO_USER_ID_LENGTH,
-} from "@/constants/crypto.constants";
+import { CRYPTO_FIELDS_LENGTH } from "@/constants/crypto.constants";
 import { TIME_FIELDS_LENGTH } from "@/constants/time.constants";
-import { generateUserId } from "@/helpers/crypto.helpers";
-import {
-  ISONow,
-  getAccountCreationExpirationISODate,
-} from "@/helpers/time.helpers";
+import { USERS_ID_LENGTH } from "@/constants/users.constants";
+import { getAccountCreationExpirationISODate } from "@/helpers/accountCreations.helpers";
+import { ISONow } from "@/helpers/time.helpers";
+import { generateUserId } from "@/helpers/users.helpers";
 import {
   serial,
   varchar,
@@ -18,7 +14,7 @@ import {
 export const users = mysqlTable(
   "users",
   {
-    id: varchar("id", { length: CRYPTO_USER_ID_LENGTH })
+    id: varchar("id", { length: USERS_ID_LENGTH })
       .$defaultFn(generateUserId)
       .primaryKey(),
     createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(

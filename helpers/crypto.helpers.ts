@@ -1,12 +1,9 @@
 import * as crypto from "crypto";
 import * as argon2 from "argon2";
-import { init } from "@paralleldrive/cuid2";
 import {
   CRYPTO_SECRET,
   CRYPTO_ALGORITHM,
   CRYPTO_HASH_ALGORITHM,
-  CRYPTO_USER_ID_LENGTH,
-  CRYPTO_ACCOUNT_CREATION_CHALLENGE_BYTES,
 } from "@/constants/crypto.constants";
 import Encrypted from "@/helpers/Encrypted";
 
@@ -20,18 +17,6 @@ const generateCred = (email: string) => {
 
 const generateHash = (s: string) => {
   return crypto.createHash(CRYPTO_HASH_ALGORITHM).update(s).digest("hex");
-};
-
-const generateUserId = () => {
-  return init({
-    length: CRYPTO_USER_ID_LENGTH,
-  })();
-};
-
-const generateAccountCreationChallengeToken = () => {
-  return crypto
-    .randomBytes(CRYPTO_ACCOUNT_CREATION_CHALLENGE_BYTES)
-    .toString("hex");
 };
 
 const encrypt = (s: string, secret = CRYPTO_SECRET) => {
@@ -78,6 +63,4 @@ export {
   decrypt,
   generateHash,
   generateCred,
-  generateUserId,
-  generateAccountCreationChallengeToken,
 };
