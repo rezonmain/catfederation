@@ -14,10 +14,11 @@ import { sendEmail } from "@/helpers/mail.helpers";
 import {
   createAccountCreationEntry,
   deleteAccountCreationsByCred,
-  getAccountCreation,
+  getAccountCreationExpiresAt,
+  getAccountCreationsByCred,
 } from "@/repositories/accountCreation.repository";
 import {
-  ISONow,
+  expired,
   getAccountCreationExpirationISODate,
 } from "@/helpers/time.helpers";
 import { empty } from "@/helpers/utils.helpers";
@@ -55,6 +56,19 @@ async function handleNewAccount(fromData: FormData) {
   }
 
   const cred = generateCred(fields.data.email);
+
+  // TODO handle token expiration
+  const accountCreations = await getAccountCreationsByCred({ cred });
+  console.log(accountCreations);
+
+  if (!empty(accountCreations)) {
+    if (expired(accountCreations[0].expiresAt)) {
+      console.log("expired account creation token");
+    } else {
+      return; // handle accountCreation already exists and not expired error
+    }
+  }
+
   const challengeToken = generateAccountCreationChallengeToken();
   const expiresAt = getAccountCreationExpirationISODate();
 
@@ -97,19 +111,19 @@ async function handleAccountCreation(formData: FormData) {
   }
 
   const cred = generateCred(fields.data.email);
-  const accountCreations = await getAccountCreation({
+  const accountCreations = await getAccountCreationExpiresAt({
     cred,
     challengeToken: fields.data.challengeToken,
   });
 
   if (empty(accountCreations)) {
-    return; // handle invalid credentials error
+    throw new Error("Invalid cred or challenge token");
   }
 
-  const accountCreation = accountCreations[0];
+  const { expiresAt } = accountCreations[0];
 
-  if (accountCreation.expiresAt <= ISONow()) {
-    return; // handle expiration error
+  if (expired(expiresAt)) {
+    throw new Error("Account creation token expired");
   }
 
   const hash = await generateSecureHash(fields.data.password);
