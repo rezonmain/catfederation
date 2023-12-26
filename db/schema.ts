@@ -18,9 +18,9 @@ import {
 export const users = mysqlTable(
   "users",
   {
-    id: varchar("id", { length: CRYPTO_USER_ID_LENGTH }).$defaultFn(
-      generateUserId
-    ),
+    id: varchar("id", { length: CRYPTO_USER_ID_LENGTH })
+      .$defaultFn(generateUserId)
+      .primaryKey(),
     createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
       ISONow
     ),
