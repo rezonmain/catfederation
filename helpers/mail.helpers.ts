@@ -1,7 +1,7 @@
 import {
-  MAIL_FROM_EMAIL,
   MAIL_HOST,
   MAIL_PORT,
+  MAIL_FROM_EMAIL,
 } from "@/constants/mail.constants";
 import nodemailer from "nodemailer";
 

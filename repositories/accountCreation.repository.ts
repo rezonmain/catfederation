@@ -2,14 +2,14 @@ import { db } from "@/db/db";
 import { and, eq } from "drizzle-orm";
 import {
   AccountCreation,
-  NewAccountCreation,
   accountCreations,
+  NewAccountCreation,
 } from "@/db/schema";
 
 const createAccountCreationEntry = async ({
-  challengeToken,
   cred,
   expiresAt,
+  challengeToken,
 }: NewAccountCreation) => {
   await db.insert(accountCreations).values({ challengeToken, cred, expiresAt });
 };
@@ -52,8 +52,8 @@ const deleteAccountCreationsByCred = async ({
 };
 
 export {
+  getAccountCreationsByCred,
   createAccountCreationEntry,
   getAccountCreationExpiresAt,
   deleteAccountCreationsByCred,
-  getAccountCreationsByCred,
 };
