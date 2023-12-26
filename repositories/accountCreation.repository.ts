@@ -14,7 +14,18 @@ const createAccountCreationEntry = async ({
   await db.insert(accountCreations).values({ challengeToken, cred, expiresAt });
 };
 
-const getAccountCreation = async ({
+const getAccountCreationsByCred = async ({
+  cred,
+}: {
+  cred: AccountCreation["cred"];
+}) => {
+  return await db
+    .select()
+    .from(accountCreations)
+    .where(eq(accountCreations.cred, cred));
+};
+
+const getAccountCreationExpiresAt = async ({
   cred,
   challengeToken,
 }: {
@@ -22,7 +33,7 @@ const getAccountCreation = async ({
   challengeToken: AccountCreation["challengeToken"];
 }) => {
   return await db
-    .select()
+    .select({ expiresAt: accountCreations.expiresAt })
     .from(accountCreations)
     .where(
       and(
@@ -42,6 +53,7 @@ const deleteAccountCreationsByCred = async ({
 
 export {
   createAccountCreationEntry,
-  getAccountCreation,
+  getAccountCreationExpiresAt,
   deleteAccountCreationsByCred,
+  getAccountCreationsByCred,
 };
