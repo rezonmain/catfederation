@@ -38,26 +38,18 @@ export const users = mysqlTable(
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
-export const accountCreations = mysqlTable(
-  "account_creations",
-  {
-    id: serial("id").primaryKey(),
-    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
-      ISONow
-    ),
-    expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
-      getAccountCreationExpirationISODate
-    ),
-    cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
-    challengeToken: varchar("challenge_token", {
-      length: CRYPTO_FIELDS_LENGTH,
-    }).notNull(),
-  },
-  (table) => {
-    return {
-      credIdx: uniqueIndex("cred_idx").on(table.cred),
-    };
-  }
-);
+export const accountCreations = mysqlTable("account_creations", {
+  id: serial("id").primaryKey(),
+  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
+    ISONow
+  ),
+  expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
+    getAccountCreationExpirationISODate
+  ),
+  cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
+  challengeToken: varchar("challenge_token", {
+    length: CRYPTO_FIELDS_LENGTH,
+  }).notNull(),
+});
 export type AccountCreation = typeof accountCreations.$inferSelect;
 export type NewAccountCreation = typeof accountCreations.$inferInsert;
