@@ -116,6 +116,7 @@ async function handleAccountCreation(formData: FormData) {
 
   await createUser({ cred, hash });
   await deleteAccountCreationsByCred({ cred });
+  redirect("/");
 }
 
 export { handleNewAccount, handleAccountCreation };
