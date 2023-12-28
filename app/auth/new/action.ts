@@ -1,10 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { APP_DOMAIN } from "@/constants/app.constants";
-import { ROUTE_AUTH_NEW } from "@/constants/route.constants";
 import { generateCred, generateSecureHash } from "@/helpers/crypto.helpers";
-import { AccountCreationUrlParams } from "@/types/auth.types";
 import { renderAccountCreationTemplate } from "@/templates/account_creation.email";
 import { sendEmail } from "@/helpers/mail.helpers";
 import {
@@ -19,6 +16,7 @@ import { createUser } from "@/repositories/user.repository";
 import {
   getAccountCreationExpirationISODate,
   generateAccountCreationChallengeToken,
+  generateAccountCreationUrl,
 } from "@/helpers/accountCreations.helpers";
 
 const signInSchema = z.object({
@@ -32,14 +30,6 @@ const createAccountSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters" }),
   challengeToken: z.string(),
 });
-
-const generateAccountCreationUrl = (params: AccountCreationUrlParams) => {
-  const url = new URL(`${APP_DOMAIN}${ROUTE_AUTH_NEW}`);
-  Object.entries(params).forEach(([key, value]) => {
-    url.searchParams.append(key, value);
-  });
-  return url.toString();
-};
 
 async function handleNewAccount(fromData: FormData) {
   const fields = signInSchema.safeParse({
