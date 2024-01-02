@@ -49,3 +49,21 @@ export const signupAttempts = mysqlTable("signup_attempts", {
 });
 export type SignupAttempt = typeof signupAttempts.$inferSelect;
 export type NewSignupAttempt = typeof signupAttempts.$inferInsert;
+
+export const sessionRevocations = mysqlTable(
+  "session_revocations",
+  {
+    id: serial("id").primaryKey(),
+    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+      .$defaultFn(ISONow)
+      .notNull(),
+    jwtHash: varchar("jwt_hash", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
+  },
+  (table) => {
+    return {
+      jwtHashIdx: uniqueIndex("jwt_hash_idx").on(table.jwtHash),
+    };
+  }
+);
+export type SessionRevocation = typeof sessionRevocations.$inferSelect;
+export type NewSessionRevocation = typeof sessionRevocations.$inferInsert;
