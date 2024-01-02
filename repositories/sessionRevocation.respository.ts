@@ -1,11 +1,15 @@
 import { db } from "@/db/db";
-import { sessionRevocations, type SessionRevocation } from "@/db/schema";
+import {
+  sessionRevocations,
+  type SessionRevocation,
+  type NewSessionRevocation,
+} from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 const createSessionRevocation = ({
   jwtHash,
 }: {
-  jwtHash: SessionRevocation["jwtHash"];
+  jwtHash: NewSessionRevocation["jwtHash"];
 }) => {
   db.insert(sessionRevocations).values({ jwtHash });
 };
