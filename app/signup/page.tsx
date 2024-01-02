@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">
-      <NewAccountForm />
+      <SignupForm />
     </main>
   );
 }
 
-const NewAccountForm = () => {
+const SignupForm = () => {
   return (
     <form action={handleSignup} className="flex flex-col gap-4">
       <h1>Sign up to catfederation</h1>
