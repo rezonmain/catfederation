@@ -40,8 +40,8 @@ const SignupConfirmForm: React.FC<SignupConfirmFormProps> = ({
       <p>
         You are about to create a new account with <em>{email}</em>.
       </p>
-      <input hidden name="email" value={email} />
-      <input hidden name="challengeToken" value={challengeToken} />
+      <input hidden name="email" value={email} readOnly />
+      <input hidden name="challengeToken" value={challengeToken} readOnly />
       <TextInput
         id="password"
         name="password"
