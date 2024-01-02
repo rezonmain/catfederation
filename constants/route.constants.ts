@@ -1,3 +1,3 @@
-const ROUTE_AUTH_NEW = "/auth/new";
+const ROUTE_SIGNUP_CONFIRM = "/signup/confirm";
 
-export { ROUTE_AUTH_NEW };
+export { ROUTE_SIGNUP_CONFIRM };

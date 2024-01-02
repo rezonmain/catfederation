@@ -1,13 +1,11 @@
 import { Html, Button, Heading, Text } from "@react-email/components";
 import { render } from "@react-email/render";
 
-type AccountCreationTemplateProps = {
+type SignupAttemptTemplateProps = {
   url: string;
 };
 
-const AccountCreationTemplate: React.FC<AccountCreationTemplateProps> = (
-  props
-) => {
+const SignupAttemptTemplate: React.FC<SignupAttemptTemplateProps> = (props) => {
   return (
     <Html lang="en" dir="ltr">
       <Heading as="h1">cat_federation account creation</Heading>
@@ -22,7 +20,7 @@ const AccountCreationTemplate: React.FC<AccountCreationTemplateProps> = (
   );
 };
 
-const renderAccountCreationTemplate = (url: string) => {
-  return render(<AccountCreationTemplate url={url} />);
+const renderSignupAttemptTemplate = (url: string) => {
+  return render(<SignupAttemptTemplate url={url} />);
 };
-export { renderAccountCreationTemplate };
+export { renderSignupAttemptTemplate };

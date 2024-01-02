@@ -1,7 +1,7 @@
 import { CRYPTO_FIELDS_LENGTH } from "@/constants/crypto.constants";
 import { TIME_FIELDS_LENGTH } from "@/constants/time.constants";
 import { USERS_ID_LENGTH } from "@/constants/users.constants";
-import { getAccountCreationExpirationISODate } from "@/helpers/accountCreations.helpers";
+import { getSignupAttemptExpirationISODate } from "@/helpers/signupAttempt.helpers";
 import { ISONow } from "@/helpers/time.helpers";
 import { generateUserId } from "@/helpers/users.helpers";
 import {
@@ -34,18 +34,18 @@ export const users = mysqlTable(
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
-export const accountCreations = mysqlTable("account_creations", {
+export const signupAttempts = mysqlTable("signup_attempts", {
   id: serial("id").primaryKey(),
   createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
     .$defaultFn(ISONow)
     .notNull(),
   expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH })
-    .$defaultFn(getAccountCreationExpirationISODate)
+    .$defaultFn(getSignupAttemptExpirationISODate)
     .notNull(),
   cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
   challengeToken: varchar("challenge_token", {
     length: CRYPTO_FIELDS_LENGTH,
   }).notNull(),
 });
-export type AccountCreation = typeof accountCreations.$inferSelect;
-export type NewAccountCreation = typeof accountCreations.$inferInsert;
+export type SignupAttempt = typeof signupAttempts.$inferSelect;
+export type NewSignupAttempt = typeof signupAttempts.$inferInsert;
