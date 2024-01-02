@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import {
+  SESSION_FGP_COOKIE_NAME,
+  SESSION_JWT_COOKIE_NAME,
   SESSION_JWT_EXPIRES_IN,
   SESSION_JWT_ISSUER,
   SESSION_JWT_SECRET,
@@ -82,10 +84,37 @@ const isSessionRevoked = ({ jwt }: { jwt: Session["jwt"] }): boolean => {
   return !empty(revocations);
 };
 
+const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
+  const { jwt: jwtValue, fgp: fgpValue } = generateSession(userId);
+  const jwt = {
+    name: SESSION_JWT_COOKIE_NAME,
+    value: jwtValue,
+    options: {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict" as const,
+      maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
+    },
+  };
+
+  const fgp = {
+    name: SESSION_FGP_COOKIE_NAME,
+    value: fgpValue,
+    options: {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict" as const,
+      maxAge: 1000 * 60 * 60 * 24 * 3,
+    },
+  };
+
+  return { jwt, fgp };
+};
+
 export {
-  generateSession,
   verifyJWT,
   decodeJWT,
   revokeSession,
   isSessionRevoked,
+  generateNewSessionCookies,
 };
