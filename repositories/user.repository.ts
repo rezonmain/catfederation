@@ -1,9 +1,12 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db/db";
 import { NewUser, User, users } from "@/db/schema";
+import { generateUserId } from "@/helpers/users.helpers";
 
-const createUser = async ({ cred, hash }: NewUser) => {
-  await db.insert(users).values({ cred, hash });
+const createUser = async ({ cred, hash }: NewUser): Promise<string> => {
+  const id = generateUserId();
+  await db.insert(users).values({ cred, hash, id });
+  return id;
 };
 
 const getUsersByCred = async ({ cred }: { cred: User["cred"] }) => {
