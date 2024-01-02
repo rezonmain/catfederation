@@ -54,9 +54,9 @@ async function handleSignup(fromData: FormData) {
   });
 
   const url = generateSignupAttemptUrl({
-    e: fields.data.email,
     ct: challengeToken,
     xat: expiresAt,
+    e: fields.data.email,
   });
 
   const emailHtml = renderSignupAttemptTemplate(url);
