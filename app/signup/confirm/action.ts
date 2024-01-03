@@ -10,7 +10,7 @@ import {
 import { createUser } from "@/repositories/user.repository";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { generateNewSessionCookies } from "@/helpers/session.helpers";
+import { setNewSessionCookies } from "@/helpers/session.helpers";
 
 const signupConfirmSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -55,10 +55,7 @@ async function handleSignupConfirm(formData: FormData) {
   const userId = await createUser({ cred, hash });
   deleteSignupAttemptsByCred({ cred });
 
-  const { jwt, fgp } = generateNewSessionCookies({ userId });
-  cookies().set(jwt.name, jwt.value, jwt.options);
-  cookies().set(fgp.name, fgp.value, fgp.options);
-
+  setNewSessionCookies({ userId });
   redirect("/");
 }
 

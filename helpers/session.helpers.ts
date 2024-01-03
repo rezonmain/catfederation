@@ -142,4 +142,16 @@ const deleteSessionCookies = () => {
   cookies().delete(SESSION_FGP_COOKIE_NAME);
 };
 
-export { auth, revokeSession, deleteSessionCookies, generateNewSessionCookies };
+const setNewSessionCookies = (params: { userId: User["id"] }) => {
+  const { jwt, fgp } = generateNewSessionCookies(params);
+  cookies().set(jwt.name, jwt.value, jwt.options);
+  cookies().set(fgp.name, fgp.value, fgp.options);
+};
+
+export {
+  auth,
+  revokeSession,
+  deleteSessionCookies,
+  setNewSessionCookies,
+  generateNewSessionCookies,
+};
