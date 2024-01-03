@@ -113,13 +113,6 @@ const getSessionCookies = () => {
 const auth = () => {
   try {
     const { jwt, fgp } = getSessionCookies();
-
-    isJWTRevoked({ jwt: jwt.value }).then((isRevoked) => {
-      if (isRevoked) {
-        throw new Error("JWT revoked");
-      }
-    });
-
     const userId = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
     return { userId };
   } catch (error) {
