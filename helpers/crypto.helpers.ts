@@ -48,7 +48,13 @@ const decrypt = (
   return plain.toString();
 };
 
-const verify = async (hash: string, password: string) => {
+const verify = async ({
+  hash,
+  password,
+}: {
+  hash: string;
+  password: string;
+}) => {
   try {
     return argon2.verify(hash, password);
   } catch {
