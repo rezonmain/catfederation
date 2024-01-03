@@ -10,7 +10,7 @@ const createUser = async ({ cred, hash }: NewUser): Promise<string> => {
 };
 
 const getUsersByCred = async ({ cred }: { cred: User["cred"] }) => {
-  return db.select().from(users).where(eq(users.cred, cred));
+  return await db.select().from(users).where(eq(users.cred, cred));
 };
 
 const getHashByCred = async ({ cred }: { cred: User["cred"] }) => {
