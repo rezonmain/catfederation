@@ -21,34 +21,26 @@ const generateSessionUserFingerprint = (): string =>
 
 const verifyJWT = ({ jwt: _jwt, fgp }: Session): boolean => {
   const hashedFingerprint = generateHash(fgp);
-  try {
-    const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
-      issuer: SESSION_JWT_ISSUER,
-    });
-    if (typeof decoded !== "object") {
-      throw new Error("JWT has no body");
-    }
-    if (decoded.fgp !== hashedFingerprint) {
-      throw new Error("JWT fingerprint doesn't match");
-    }
-    return true;
-  } catch (error) {
-    console.error(`➡️ [session][verifyJWT()] ${JSON.stringify(error)})`);
-    return false;
+  const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
+    issuer: SESSION_JWT_ISSUER,
+  });
+  if (typeof decoded !== "object") {
+    throw new Error("JWT has no body");
   }
+  if (decoded.fgp !== hashedFingerprint) {
+    throw new Error("JWT fingerprint doesn't match");
+  }
+  return true;
 };
 
-const decodeJWT = (_jwt: Session["jwt"]): { cuid: string } | null => {
-  try {
-    const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
-      issuer: SESSION_JWT_ISSUER,
-    });
-    if (typeof decoded !== "object") throw "JWT has no body";
-    return decoded as { cuid: string };
-  } catch (error) {
-    console.error(`➡️ [🔒Auth][decodeJWT()] ${JSON.stringify(error)})`);
-    return null;
+const decodeJWT = (_jwt: Session["jwt"]): { uid: string } | null => {
+  const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
+    issuer: SESSION_JWT_ISSUER,
+  });
+  if (typeof decoded !== "object") {
+    throw new Error("JWT has no body");
   }
+  return decoded as { uid: string };
 };
 
 const generateSession = (userId: User["id"]): Session => {
