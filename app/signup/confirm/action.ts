@@ -34,6 +34,7 @@ async function handleSignupConfirm(formData: FormData) {
   }
 
   const cred = generateCred(fields.data.email);
+
   const signupAttemptsExpiresAt = await getSignupAttemptsExpiresAt({
     cred,
     challengeToken: fields.data.challengeToken,
@@ -53,9 +54,11 @@ async function handleSignupConfirm(formData: FormData) {
 
   const userId = await createUser({ cred, hash });
   deleteSignupAttemptsByCred({ cred });
+
   const { jwt, fgp } = generateNewSessionCookies({ userId });
   cookies().set(jwt.name, jwt.value, jwt.options);
   cookies().set(fgp.name, fgp.value, fgp.options);
+
   redirect("/");
 }
 
