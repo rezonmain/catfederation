@@ -14,12 +14,13 @@ import {
   createSessionRevocation,
   getSessionRevocations,
 } from "@/repositories/sessionRevocation.respository";
-import { empty } from "./utils.helpers";
+import { empty, nil } from "./utils.helpers";
+import { cookies } from "next/headers";
 
 const generateSessionUserFingerprint = (): string =>
   crypto.randomBytes(25).toString("hex");
 
-const verifyJWT = ({ jwt: _jwt, fgp }: Session): boolean => {
+const verifyJWT = ({ jwt: _jwt, fgp }: Session): string => {
   const hashedFingerprint = generateHash(fgp);
   const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
     issuer: SESSION_JWT_ISSUER,
@@ -30,17 +31,7 @@ const verifyJWT = ({ jwt: _jwt, fgp }: Session): boolean => {
   if (decoded.fgp !== hashedFingerprint) {
     throw new Error("JWT fingerprint doesn't match");
   }
-  return true;
-};
-
-const decodeJWT = (_jwt: Session["jwt"]): { uid: string } | null => {
-  const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
-    issuer: SESSION_JWT_ISSUER,
-  });
-  if (typeof decoded !== "object") {
-    throw new Error("JWT has no body");
-  }
-  return decoded as { uid: string };
+  return decoded.uid;
 };
 
 const generateSession = (userId: User["id"]): Session => {
@@ -103,10 +94,24 @@ const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
   return { jwt, fgp };
 };
 
-export {
-  verifyJWT,
-  decodeJWT,
-  revokeSession,
-  isSessionRevoked,
-  generateNewSessionCookies,
+const auth = () => {
+  try {
+    const jwt = cookies().get(SESSION_JWT_COOKIE_NAME);
+    const fgp = cookies().get(SESSION_FGP_COOKIE_NAME);
+    if (nil(jwt) || nil(fgp)) {
+      throw new Error("No session cookies");
+    }
+
+    if (isSessionRevoked({ jwt: jwt.value })) {
+      throw new Error("Session revoked");
+    }
+
+    const userId = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
+    return { userId };
+  } catch (error) {
+    console.error(error);
+    return { userId: null };
+  }
 };
+
+export { revokeSession, auth, generateNewSessionCookies };
