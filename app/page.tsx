@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { ROUTE_SIGNUP } from "@/constants/route.constants";
+import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { auth } from "@/helpers/session.helpers";
 import { nil } from "@/helpers/utils.helpers";
 import { handleLogout } from "./actions";
@@ -8,7 +8,7 @@ export default function Home() {
   const { userId } = auth();
 
   if (nil(userId)) {
-    redirect(ROUTE_SIGNUP);
+    redirect(ROUTE_LOGIN);
   }
 
   return (
