@@ -4,6 +4,7 @@ import { z } from "zod";
 import { generateCred, verify } from "@/helpers/crypto.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import { getUsersByCred } from "@/repositories/user.repository";
+import { setNewSessionCookies } from "@/helpers/session.helpers";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -38,6 +39,9 @@ async function handleLogin(formData: FormData) {
     // invalid password
     throw new Error("Generic authentication error");
   }
+
+  const { id } = users[0];
+  setNewSessionCookies({ userId: id });
 
   redirect("/");
 }
