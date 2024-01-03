@@ -5,7 +5,7 @@ const empty = (val: string | unknown[] | object | null | undefined) => {
   return false;
 };
 
-const nil = (val: string | unknown[] | object | null | undefined) => {
+const nil = (val: unknown): val is null | undefined => {
   return val === null || val === undefined;
 };
 
