@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import {
   SESSION_FGP_COOKIE_NAME,
+  SESSION_JWT_ALGORITHM,
   SESSION_JWT_COOKIE_NAME,
   SESSION_JWT_EXPIRES_IN,
   SESSION_JWT_ISSUER,
@@ -24,6 +25,7 @@ const verifyJWT = ({ jwt: _jwt, fgp }: Session): string => {
   const hashedFingerprint = generateHash(fgp);
   const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
     issuer: SESSION_JWT_ISSUER,
+    algorithms: [SESSION_JWT_ALGORITHM],
   });
   if (typeof decoded !== "object") {
     throw new Error("JWT has no body");
@@ -47,6 +49,7 @@ const generateSession = (userId: User["id"]): Session => {
     {
       expiresIn: SESSION_JWT_EXPIRES_IN,
       issuer: SESSION_JWT_ISSUER,
+      algorithm: SESSION_JWT_ALGORITHM,
     }
   );
 

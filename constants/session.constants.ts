@@ -5,6 +5,7 @@ const SESSION_JWT_ISSUER = validateEnvironmentVariable("JWT_ISSUER");
 const SESSION_JWT_EXPIRES_IN = "3d";
 const SESSION_JWT_COOKIE_NAME = "__Secure-jwt";
 const SESSION_FGP_COOKIE_NAME = "__Secure-fgp";
+const SESSION_JWT_ALGORITHM = "HS256";
 
 export {
   SESSION_JWT_SECRET,
@@ -12,4 +13,5 @@ export {
   SESSION_JWT_EXPIRES_IN,
   SESSION_JWT_COOKIE_NAME,
   SESSION_FGP_COOKIE_NAME,
+  SESSION_JWT_ALGORITHM,
 };

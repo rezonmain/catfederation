@@ -6,12 +6,12 @@ import {
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-const createSessionRevocation = ({
+const createSessionRevocation = async ({
   jwtHash,
 }: {
   jwtHash: NewSessionRevocation["jwtHash"];
 }) => {
-  db.insert(sessionRevocations).values({ jwtHash });
+  await db.insert(sessionRevocations).values({ jwtHash });
 };
 
 const getSessionRevocations = async ({
