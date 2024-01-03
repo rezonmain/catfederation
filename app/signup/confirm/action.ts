@@ -47,7 +47,7 @@ async function handleSignupConfirm(formData: FormData) {
   const { expiresAt } = signupAttemptsExpiresAt[0];
 
   if (expired(expiresAt)) {
-    throw new Error("Account creation token expired");
+    throw new Error("Sign up attempt expired");
   }
 
   const hash = await generateSecureHash(fields.data.password);
