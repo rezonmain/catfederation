@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { type Metadata } from "next/types";
-import { SubmitButton } from "@/ui/submit-button";
 import { TextInput } from "flowbite-react";
 import { CgMail } from "react-icons/cg";
+import { SubmitButton } from "@/ui/submit-button";
+import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { handleSignup } from "./action";
 
 export const metadata: Metadata = {
@@ -41,6 +43,11 @@ const SignupForm = () => {
       <small>
         By pressing the Sign up button you will receive an email to the provided
         address with further instructions
+      </small>
+      <hr />
+      <small>
+        Already have a cat federation account?{" "}
+        <Link href={ROUTE_LOGIN}>Click here to log in</Link>{" "}
       </small>
     </form>
   );

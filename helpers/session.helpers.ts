@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import {
@@ -15,8 +16,7 @@ import {
   createSessionRevocation,
   getSessionRevocations,
 } from "@/repositories/sessionRevocation.respository";
-import { empty, nil } from "./utils.helpers";
-import { cookies } from "next/headers";
+import { empty, nil } from "@/helpers/utils.helpers";
 
 const generateSessionUserFingerprint = (): string =>
   crypto.randomBytes(25).toString("hex");

@@ -1,10 +1,16 @@
-import { SubmitButton } from "@/ui/submit-button";
+import Link from "next/link";
 import { TextInput } from "flowbite-react";
+import { type Metadata } from "next/types";
 import { CgMail, CgKey } from "react-icons/cg";
+import { SubmitButton } from "@/ui/submit-button";
 import { handleLogin } from "./action";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
-import Link from "next/link";
 import { ROUTE_SIGNUP } from "@/constants/route.constants";
+
+export const metadata: Metadata = {
+  title: "catfederation | login",
+  description: "log in into catfederation",
+};
 
 export default function LoginPage() {
   return (

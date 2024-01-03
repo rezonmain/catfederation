@@ -1,10 +1,9 @@
 "use server";
-import { deleteSessionCookies, revokeSession } from "@/helpers/session.helpers";
 import { redirect } from "next/navigation";
+import { deleteSessionCookies } from "@/helpers/session.helpers";
 
 const handleLogout = () => {
-  revokeSession();
-  // deleteSessionCookies();
+  deleteSessionCookies();
   redirect("/");
 };
 

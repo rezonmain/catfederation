@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { auth } from "@/helpers/session.helpers";
 import { nil } from "@/helpers/utils.helpers";
+import { SubmitButton } from "@/ui/submit-button";
 import { handleLogout } from "./actions";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
       <h1>cat federation</h1>
       <p>{userId}</p>
       <form action={handleLogout}>
-        <button>Logout</button>
+        <SubmitButton>Logout</SubmitButton>
       </form>
     </main>
   );
