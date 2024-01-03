@@ -9,10 +9,18 @@ export const metadata: Metadata = {
   description: "Sign up into catfederation",
 };
 
-export default function SignupPage() {
+export type SignupPageSearchParams = {
+  es: "true";
+};
+
+export default function SignupPage({
+  searchParams,
+}: {
+  searchParams: SignupPageSearchParams;
+}) {
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">
-      <SignupForm />
+      {searchParams.es ? <SignupEmailConfirmNotice /> : <SignupForm />}
     </main>
   );
 }
@@ -35,5 +43,17 @@ const SignupForm = () => {
         address with further instructions
       </small>
     </form>
+  );
+};
+
+const SignupEmailConfirmNotice = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <h1>Check your email</h1>
+      <p>
+        We sent you an email with a link to confirm your email address. Please
+        check your inbox and click on the link provided.
+      </p>
+    </div>
   );
 };
