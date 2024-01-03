@@ -39,9 +39,9 @@ async function handleSignup(fromData: FormData) {
 
   if (!empty(signupAttempts)) {
     if (expired(signupAttempts[0].expiresAt)) {
-      console.error("expired account creation token");
+      throw new Error("Expired sign up attempt token");
     } else {
-      return; // handle accountCreation already exists and not expired error
+      throw new Error("A valid sign up attempt already exists");
     }
   }
 
