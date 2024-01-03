@@ -56,14 +56,18 @@ const generateSession = (userId: User["id"]): Session => {
   };
 };
 
-const revokeSession = ({ jwt }: { jwt: Session["jwt"] }): void => {
+const revokeJWT = ({ jwt }: { jwt: Session["jwt"] }): void => {
   const jwtHash = generateHash(jwt);
   createSessionRevocation({ jwtHash });
 };
 
-const isSessionRevoked = ({ jwt }: { jwt: Session["jwt"] }): boolean => {
+const isJWTRevoked = async ({
+  jwt,
+}: {
+  jwt: Session["jwt"];
+}): Promise<boolean> => {
   const jwtHash = generateHash(jwt);
-  const revocations = getSessionRevocations({ jwtHash });
+  const revocations = await getSessionRevocations({ jwtHash });
   return !empty(revocations);
 };
 
@@ -94,17 +98,24 @@ const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
   return { jwt, fgp };
 };
 
+const getSessionCookies = () => {
+  const jwt = cookies().get(SESSION_JWT_COOKIE_NAME);
+  const fgp = cookies().get(SESSION_FGP_COOKIE_NAME);
+  if (nil(jwt) || nil(fgp)) {
+    throw new Error("No session cookies");
+  }
+  return { jwt, fgp };
+};
+
 const auth = () => {
   try {
-    const jwt = cookies().get(SESSION_JWT_COOKIE_NAME);
-    const fgp = cookies().get(SESSION_FGP_COOKIE_NAME);
-    if (nil(jwt) || nil(fgp)) {
-      throw new Error("No session cookies");
-    }
+    const { jwt, fgp } = getSessionCookies();
 
-    if (isSessionRevoked({ jwt: jwt.value })) {
-      throw new Error("Session revoked");
-    }
+    isJWTRevoked({ jwt: jwt.value }).then((isRevoked) => {
+      if (isRevoked) {
+        throw new Error("JWT revoked");
+      }
+    });
 
     const userId = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
     return { userId };
@@ -114,4 +125,18 @@ const auth = () => {
   }
 };
 
-export { revokeSession, auth, generateNewSessionCookies };
+const revokeSession = () => {
+  try {
+    const { jwt } = getSessionCookies();
+    revokeJWT({ jwt: jwt.value });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const deleteSessionCookies = () => {
+  cookies().delete(SESSION_JWT_COOKIE_NAME);
+  cookies().delete(SESSION_FGP_COOKIE_NAME);
+};
+
+export { auth, revokeSession, deleteSessionCookies, generateNewSessionCookies };
