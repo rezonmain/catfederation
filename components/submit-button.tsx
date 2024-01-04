@@ -1,7 +1,8 @@
 "use client";
-import { Button, Spinner } from "flowbite-react";
 import { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
+import { Button } from "./ui/button";
+import { LoadingSpinner } from "./ui/loading-spinner";
 
 type SubmitButtonProps = ComponentProps<typeof Button>;
 
@@ -10,7 +11,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ children, ...props }) => {
 
   return (
     <Button type="submit" aria-disabled={pending} {...props}>
-      {pending ? <Spinner /> : children}
+      {pending ? <LoadingSpinner /> : children}
     </Button>
   );
 };

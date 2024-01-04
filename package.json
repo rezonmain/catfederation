@@ -15,16 +15,21 @@
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
     "@planetscale/database": "^1.13.0",
+    "@radix-ui/react-slot": "^1.0.2",
     "@react-email/components": "^0.0.12",
     "@react-email/render": "^0.0.10",
     "argon2": "^0.31.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "drizzle-orm": "^0.29.1",
-    "flowbite-react": "^0.7.2",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.303.0",
     "next": "14.0.4",
     "nodemailer": "^6.9.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.5",

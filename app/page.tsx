@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { auth } from "@/helpers/session.helpers";
 import { nil } from "@/helpers/utils.helpers";
-import { SubmitButton } from "@/ui/submit-button";
+import { SubmitButton } from "@/components/submit-button";
 import { handleLogout } from "./actions";
 
 export default function Home() {

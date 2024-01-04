@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import { ThemeModeScript } from "flowbite-react";
 import "./globals.css";
 
 const noto = Noto_Sans({ subsets: ["latin"] });
@@ -17,9 +16,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <ThemeModeScript />
-      </head>
       <body className={noto.className}>{children}</body>
     </html>
   );

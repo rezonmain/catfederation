@@ -1,11 +1,10 @@
-import Link from "next/link";
-import { TextInput } from "flowbite-react";
 import { type Metadata } from "next/types";
-import { CgMail, CgKey } from "react-icons/cg";
-import { SubmitButton } from "@/ui/submit-button";
+import { SubmitButton } from "@/components/submit-button";
 import { handleLogin } from "./action";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { ROUTE_SIGNUP } from "@/constants/route.constants";
+import { Input } from "@/components/ui/input";
+import { Link } from "@/components/link";
 
 export const metadata: Metadata = {
   title: "catfederation | login",
@@ -24,20 +23,18 @@ const LoginForm = () => {
   return (
     <form action={handleLogin} className="flex flex-col gap-4">
       <h1>Log in to catfederation</h1>
-      <TextInput
+      <Input
         id="email"
         type="email"
         name="email"
         placeholder="Email"
-        icon={CgMail}
         required
       />
-      <TextInput
+      <Input
         id="password"
         type="password"
         name="password"
         placeholder="Password"
-        icon={CgKey}
         minLength={PASSWORD_MIN_LENGTH}
         required
       />

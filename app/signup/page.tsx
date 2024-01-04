@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { type Metadata } from "next/types";
-import { TextInput } from "flowbite-react";
-import { CgMail } from "react-icons/cg";
-import { SubmitButton } from "@/ui/submit-button";
+import { SubmitButton } from "@/components/submit-button";
 import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { handleSignup } from "./action";
+import { Input } from "@/components/ui/input";
+import { Link } from "@/components/link";
 
 export const metadata: Metadata = {
   title: "catfederation | signup",
@@ -21,7 +20,7 @@ export default function SignupPage({
   searchParams: SignupPageSearchParams;
 }) {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-center">
+    <main className="flex flex-col min-h-screen items-center justify-center max-w-sm mx-auto">
       {searchParams.es ? <SignupEmailConfirmNotice /> : <SignupForm />}
     </main>
   );
@@ -31,12 +30,11 @@ const SignupForm = () => {
   return (
     <form action={handleSignup} className="flex flex-col gap-4">
       <h1>Sign up to catfederation</h1>
-      <TextInput
+      <Input
         id="email"
         type="email"
         name="email"
         placeholder="Email"
-        icon={CgMail}
         required
       />
       <SubmitButton>Sign up</SubmitButton>
