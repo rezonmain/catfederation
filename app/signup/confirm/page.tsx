@@ -1,8 +1,8 @@
+import { type Metadata } from "next";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { SignupAttemptUrlParams } from "@/types/auth.types";
 import { SubmitButton } from "@/components/submit-button";
 import { handleSignupConfirm } from "./action";
-import { type Metadata } from "next";
 import { Input } from "@/components/ui/input";
 
 export const metadata: Metadata = {

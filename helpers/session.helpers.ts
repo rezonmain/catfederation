@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import {
@@ -17,6 +18,7 @@ import {
   getSessionRevocations,
 } from "@/repositories/sessionRevocation.respository";
 import { empty, nil } from "@/helpers/utils.helpers";
+import { ROUTE_LOGIN } from "@/constants/route.constants";
 
 const generateSessionUserFingerprint = (): string =>
   crypto.randomBytes(25).toString("hex");
@@ -112,10 +114,13 @@ const auth = () => {
   try {
     const { jwt, fgp } = getSessionCookies();
     const userId = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
+    if (nil(userId)) {
+      throw new Error("Invalid token");
+    }
     return { userId };
   } catch (error) {
     console.error(error);
-    return { userId: null };
+    redirect(ROUTE_LOGIN);
   }
 };
 

@@ -5,6 +5,7 @@ import { generateCred, verify } from "@/helpers/crypto.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import { getUsersByCred } from "@/repositories/user.repository";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
+import { ROUTE_USER } from "@/constants/route.constants";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -43,7 +44,7 @@ async function handleLogin(formData: FormData) {
   const { id } = users[0];
   setNewSessionCookies({ userId: id });
 
-  redirect("/");
+  redirect(ROUTE_USER);
 }
 
 export { handleLogin };

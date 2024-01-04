@@ -1,5 +1,6 @@
 "use server";
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 import { generateCred, generateSecureHash } from "@/helpers/crypto.helpers";
 import { expired } from "@/helpers/time.helpers";
 import { empty } from "@/helpers/utils.helpers";
@@ -8,9 +9,8 @@ import {
   getSignupAttemptsExpiresAt,
 } from "@/repositories/signupAttempt.repository";
 import { createUser } from "@/repositories/user.repository";
-import { redirect } from "next/navigation";
-import { z } from "zod";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
+import { ROUTE_USER } from "@/constants/route.constants";
 
 const signupConfirmSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -56,7 +56,7 @@ async function handleSignupConfirm(formData: FormData) {
   deleteSignupAttemptsByCred({ cred });
 
   setNewSessionCookies({ userId });
-  redirect("/");
+  redirect(ROUTE_USER);
 }
 
 export { handleSignupConfirm };

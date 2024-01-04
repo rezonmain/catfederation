@@ -1,6 +1,6 @@
+import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { nil } from "@/helpers/utils.helpers";
-import { redirect } from "next/navigation";
 
 const getServerActionPathname = () => {
   const heads = headers();
