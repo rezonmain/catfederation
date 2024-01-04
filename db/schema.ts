@@ -34,7 +34,7 @@ export const users = mysqlTable(
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
-export const email2FAs = mysqlTable("signup_attempts", {
+export const email2FAs = mysqlTable("email_2fas", {
   id: serial("id").primaryKey(),
   createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
     .$defaultFn(ISONow)
