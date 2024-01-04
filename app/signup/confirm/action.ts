@@ -5,9 +5,9 @@ import { generateCred, generateSecureHash } from "@/helpers/crypto.helpers";
 import { expired } from "@/helpers/time.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import {
-  deleteSignupAttemptsByCred,
-  getSignupAttemptsExpiresAt,
-} from "@/repositories/signupAttempt.repository";
+  deleteEmail2FAsByCred,
+  getEmail2FAsExpiresAt,
+} from "@/repositories/email2FA.repository";
 import { createUser } from "@/repositories/user.repository";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
 import { ROUTE_USER } from "@/constants/route.constants";
@@ -35,16 +35,16 @@ async function handleSignupConfirm(formData: FormData) {
 
   const cred = generateCred(fields.data.email);
 
-  const signupAttemptsExpiresAt = await getSignupAttemptsExpiresAt({
+  const email2FAsExpiresAt = await getEmail2FAsExpiresAt({
     cred,
     challengeToken: fields.data.challengeToken,
   });
 
-  if (empty(signupAttemptsExpiresAt)) {
+  if (empty(email2FAsExpiresAt)) {
     throw new Error("Invalid cred or challenge token");
   }
 
-  const { expiresAt } = signupAttemptsExpiresAt[0];
+  const { expiresAt } = email2FAsExpiresAt[0];
 
   if (expired(expiresAt)) {
     throw new Error("Sign up attempt expired");
@@ -53,7 +53,7 @@ async function handleSignupConfirm(formData: FormData) {
   const hash = await generateSecureHash(fields.data.password);
 
   const userId = await createUser({ cred, hash });
-  deleteSignupAttemptsByCred({ cred });
+  deleteEmail2FAsByCred({ cred });
 
   setNewSessionCookies({ userId });
   redirect(ROUTE_USER);

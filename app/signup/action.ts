@@ -5,15 +5,15 @@ import { sendEmail } from "@/helpers/mail.helpers";
 import { expired } from "@/helpers/time.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import {
-  createSignupAttemptEntry,
-  getSignupAttemptsByCred,
-} from "@/repositories/signupAttempt.repository";
+  createEmail2FAEntry,
+  getEmail2FAsByCred,
+} from "@/repositories/email2FA.repository";
 import {
-  generateSignupAttemptChallengeToken,
-  generateSignupAttemptUrl,
-  getSignupAttemptExpirationISODate,
-} from "@/helpers/signupAttempt.helpers";
-import { renderSignupAttemptTemplate } from "@/templates/signup_attempt.email";
+  generateEmail2FAChallengeToken,
+  generateEmail2FAUrl,
+  getEmail2FAExpirationISODate,
+} from "@/helpers/email2FA.helpers";
+import { renderSignupAttemptTemplate } from "@/templates/signup-attempt.email";
 import { returnWithSearchParams } from "@/helpers/route.helpers";
 import { type SignupPageSearchParams } from "./page";
 
@@ -35,26 +35,26 @@ async function handleSignup(fromData: FormData) {
   const cred = generateCred(fields.data.email);
 
   // TODO handle token expiration
-  const signupAttempts = await getSignupAttemptsByCred({ cred });
+  const email2FAs = await getEmail2FAsByCred({ cred });
 
-  if (!empty(signupAttempts)) {
-    if (expired(signupAttempts[0].expiresAt)) {
+  if (!empty(email2FAs)) {
+    if (expired(email2FAs[0].expiresAt)) {
       throw new Error("Expired sign up attempt token");
     } else {
       throw new Error("A valid sign up attempt already exists");
     }
   }
 
-  const challengeToken = generateSignupAttemptChallengeToken();
-  const expiresAt = getSignupAttemptExpirationISODate();
+  const challengeToken = generateEmail2FAChallengeToken();
+  const expiresAt = getEmail2FAExpirationISODate();
 
-  await createSignupAttemptEntry({
+  await createEmail2FAEntry({
     cred,
     challengeToken,
     expiresAt,
   });
 
-  const url = generateSignupAttemptUrl({
+  const url = generateEmail2FAUrl({
     ct: challengeToken,
     xat: expiresAt,
     e: fields.data.email,

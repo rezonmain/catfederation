@@ -1,7 +1,7 @@
 import { CRYPTO_FIELDS_LENGTH } from "@/constants/crypto.constants";
 import { TIME_FIELDS_LENGTH } from "@/constants/time.constants";
 import { USERS_ID_LENGTH } from "@/constants/users.constants";
-import { getSignupAttemptExpirationISODate } from "@/helpers/signupAttempt.helpers";
+import { getEmail2FAExpirationISODate } from "@/helpers/email2FA.helpers";
 import { ISONow } from "@/helpers/time.helpers";
 import { generateUserId } from "@/helpers/users.helpers";
 import {
@@ -34,36 +34,18 @@ export const users = mysqlTable(
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
-export const signupAttempts = mysqlTable("signup_attempts", {
+export const email2FAs = mysqlTable("signup_attempts", {
   id: serial("id").primaryKey(),
   createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
     .$defaultFn(ISONow)
     .notNull(),
   expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH })
-    .$defaultFn(getSignupAttemptExpirationISODate)
+    .$defaultFn(getEmail2FAExpirationISODate)
     .notNull(),
   cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
   challengeToken: varchar("challenge_token", {
     length: CRYPTO_FIELDS_LENGTH,
   }).notNull(),
 });
-export type SignupAttempt = typeof signupAttempts.$inferSelect;
-export type NewSignupAttempt = typeof signupAttempts.$inferInsert;
-
-export const sessionRevocations = mysqlTable(
-  "session_revocations",
-  {
-    id: serial("id").primaryKey(),
-    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
-      .$defaultFn(ISONow)
-      .notNull(),
-    jwtHash: varchar("jwt_hash", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
-  },
-  (table) => {
-    return {
-      jwtHashIdx: uniqueIndex("jwt_hash_idx").on(table.jwtHash),
-    };
-  }
-);
-export type SessionRevocation = typeof sessionRevocations.$inferSelect;
-export type NewSessionRevocation = typeof sessionRevocations.$inferInsert;
+export type Email2FA = typeof email2FAs.$inferSelect;
+export type NewEmail2FA = typeof email2FAs.$inferInsert;

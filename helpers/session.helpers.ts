@@ -13,11 +13,7 @@ import {
 import { Session } from "@/types/session.types";
 import { generateHash } from "@/helpers/crypto.helpers";
 import { User } from "@/db/schema";
-import {
-  createSessionRevocation,
-  getSessionRevocations,
-} from "@/repositories/sessionRevocation.respository";
-import { empty, nil } from "@/helpers/utils.helpers";
+import { nil } from "@/helpers/utils.helpers";
 import { ROUTE_LOGIN } from "@/constants/route.constants";
 
 const generateSessionUserFingerprint = (): string =>
@@ -59,21 +55,6 @@ const generateSession = (userId: User["id"]): Session => {
     fgp,
     jwt: _jwt,
   };
-};
-
-const revokeJWT = ({ jwt }: { jwt: Session["jwt"] }): void => {
-  const jwtHash = generateHash(jwt);
-  createSessionRevocation({ jwtHash });
-};
-
-const isJWTRevoked = async ({
-  jwt,
-}: {
-  jwt: Session["jwt"];
-}): Promise<boolean> => {
-  const jwtHash = generateHash(jwt);
-  const revocations = await getSessionRevocations({ jwtHash });
-  return !empty(revocations);
 };
 
 const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
@@ -149,16 +130,6 @@ const auth = () => {
     redirect(ROUTE_LOGIN);
   }
 };
-
-const revokeSession = () => {
-  try {
-    const { jwt } = getSessionCookies();
-    revokeJWT({ jwt: jwt.value });
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const deleteSessionCookies = () => {
   const { jwt, fgp } = generateEmptySessionCookies();
   cookies().set(jwt.name, jwt.value, jwt.options);
@@ -173,7 +144,6 @@ const setNewSessionCookies = (params: { userId: User["id"] }) => {
 
 export {
   auth,
-  revokeSession,
   deleteSessionCookies,
   setNewSessionCookies,
   generateNewSessionCookies,
