@@ -101,6 +101,32 @@ const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
   return { jwt, fgp };
 };
 
+const generateEmptySessionCookies = () => {
+  const jwt = {
+    name: SESSION_JWT_COOKIE_NAME,
+    value: "",
+    options: {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict" as const,
+      maxAge: 0,
+    },
+  };
+
+  const fgp = {
+    name: SESSION_FGP_COOKIE_NAME,
+    value: "",
+    options: {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict" as const,
+      maxAge: 0,
+    },
+  };
+
+  return { jwt, fgp };
+};
+
 const getSessionCookies = () => {
   const jwt = cookies().get(SESSION_JWT_COOKIE_NAME);
   const fgp = cookies().get(SESSION_FGP_COOKIE_NAME);
@@ -134,8 +160,9 @@ const revokeSession = () => {
 };
 
 const deleteSessionCookies = () => {
-  cookies().set(SESSION_JWT_COOKIE_NAME, "");
-  cookies().set(SESSION_FGP_COOKIE_NAME, "");
+  const { jwt, fgp } = generateEmptySessionCookies();
+  cookies().set(jwt.name, jwt.value, jwt.options);
+  cookies().set(fgp.name, fgp.value, fgp.options);
 };
 
 const setNewSessionCookies = (params: { userId: User["id"] }) => {
