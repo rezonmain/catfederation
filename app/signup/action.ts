@@ -1,7 +1,7 @@
 "use server";
 import { z } from "zod";
 import { generateCred } from "@/helpers/crypto.helpers";
-import { sendEmail } from "@/helpers/mail.helpers";
+import { generateSignupConfirmUrl, sendEmail } from "@/helpers/mail.helpers";
 import { expired } from "@/helpers/time.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import {
@@ -10,10 +10,9 @@ import {
 } from "@/repositories/email2FA.repository";
 import {
   generateEmail2FAChallengeToken,
-  generateEmail2FAUrl,
   getEmail2FAExpirationISODate,
 } from "@/helpers/email2FA.helpers";
-import { renderSignupAttemptTemplate } from "@/templates/signup-attempt.email";
+import { renderSignupConfirmTemplate } from "@/templates/signup-confirm.email";
 import { returnWithSearchParams } from "@/helpers/route.helpers";
 import { type SignupPageSearchParams } from "./page";
 
@@ -54,13 +53,13 @@ async function handleSignup(fromData: FormData) {
     expiresAt,
   });
 
-  const url = generateEmail2FAUrl({
+  const url = generateSignupConfirmUrl({
     ct: challengeToken,
     xat: expiresAt,
     e: fields.data.email,
   });
 
-  const emailHtml = renderSignupAttemptTemplate(url);
+  const emailHtml = renderSignupConfirmTemplate(url);
 
   await sendEmail({
     to: fields.data.email,
