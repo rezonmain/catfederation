@@ -1,6 +1,5 @@
 import { type Metadata } from "next";
 import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
-import { SignupAttemptUrlParams } from "@/types/auth.types";
 import { SubmitButton } from "@/components/submit-button";
 import { handleSignupConfirm } from "./action";
 import { Input } from "@/components/ui/input";
@@ -10,16 +9,22 @@ export const metadata: Metadata = {
   description: "Create a new cat federation account",
 };
 
+export type SignupConfirmSearchParams = {
+  e: string; // email
+  ct: string; // challenge token
+  xat: string; // expiration date
+};
+
 export default function SignupConfirmPage({
   searchParams,
 }: {
-  searchParams: Partial<SignupAttemptUrlParams>;
+  searchParams: SignupConfirmSearchParams;
 }) {
   return (
     <main className="flex flex-col min-h-screen items-center justify-center max-w-sm mx-auto">
       <SignupConfirmForm
-        email={searchParams.e!}
-        challengeToken={searchParams.ct!}
+        email={searchParams.e}
+        challengeToken={searchParams.ct}
       />
     </main>
   );

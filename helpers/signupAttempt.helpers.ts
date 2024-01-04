@@ -4,9 +4,9 @@ import {
   SIGNUP_ATTEMPT_TOKEN_EXPIRATION_MINUTES,
 } from "@/constants/signupAttempt.constants";
 import { getExpirationISODate } from "@/helpers/time.helpers";
-import { type SignupAttemptUrlParams } from "@/types/auth.types";
 import { APP_DOMAIN } from "@/constants/app.constants";
 import { ROUTE_SIGNUP_CONFIRM } from "@/constants/route.constants";
+import { type SignupConfirmSearchParams } from "@/app/signup/confirm/page";
 
 const getSignupAttemptExpirationISODate = (): string => {
   return getExpirationISODate({
@@ -18,7 +18,7 @@ const generateSignupAttemptChallengeToken = () => {
   return crypto.randomBytes(SIGNUP_ATTEMPT_CHALLENGE_BYTES).toString("hex");
 };
 
-const generateSignupAttemptUrl = (params: SignupAttemptUrlParams) => {
+const generateSignupAttemptUrl = (params: SignupConfirmSearchParams) => {
   const url = new URL(`${APP_DOMAIN}${ROUTE_SIGNUP_CONFIRM}`);
   Object.entries(params).forEach(([key, value]) => {
     url.searchParams.append(key, value);
