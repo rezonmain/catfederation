@@ -83,7 +83,6 @@ const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
       httpOnly: true,
       secure: true,
       sameSite: "strict" as const,
-      maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
     },
   };
 
@@ -94,7 +93,6 @@ const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
       httpOnly: true,
       secure: true,
       sameSite: "strict" as const,
-      maxAge: 1000 * 60 * 60 * 24 * 3,
     },
   };
 
@@ -131,8 +129,8 @@ const revokeSession = () => {
 };
 
 const deleteSessionCookies = () => {
-  cookies().delete(SESSION_JWT_COOKIE_NAME);
-  cookies().delete(SESSION_FGP_COOKIE_NAME);
+  cookies().set(SESSION_JWT_COOKIE_NAME, "");
+  cookies().set(SESSION_FGP_COOKIE_NAME, "");
 };
 
 const setNewSessionCookies = (params: { userId: User["id"] }) => {
