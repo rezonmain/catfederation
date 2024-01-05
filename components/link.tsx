@@ -5,7 +5,10 @@ type LinkProps = ComponentProps<typeof NextLink>;
 
 const Link: React.FC<LinkProps> = ({ children, ...props }) => {
   return (
-    <NextLink {...props} className="text-blue-600">
+    <NextLink
+      {...props}
+      className="underline underline-offset-4 font-medium hover:no-underline"
+    >
       {children}
     </NextLink>
   );
