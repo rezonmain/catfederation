@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
 import { NewUser, User, users } from "@/db/schema";
 import { generateUserId } from "@/helpers/users.helpers";
