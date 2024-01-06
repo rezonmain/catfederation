@@ -1,13 +1,18 @@
 "use server";
-import { ROUTE_USER } from "@/constants/route.constants";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { ROUTE_DEVELOPER_APPLICATION } from "@/constants/route.constants";
+import { auth } from "@/helpers/session.helpers";
+import { createApplication } from "@/repositories/applications.repository";
+import { fillDynamicPath } from "@/helpers/route.helpers";
 
 const registerNewApplicationSchema = z.object({
   name: z.string(),
 });
 
 async function handleRegisterApplication(formData: FormData) {
+  const { userId } = auth();
+
   const fields = registerNewApplicationSchema.safeParse({
     name: formData.get("name"),
   });
@@ -18,8 +23,12 @@ async function handleRegisterApplication(formData: FormData) {
     };
   }
 
-  console.log(fields.data);
-  redirect(ROUTE_USER);
+  const applicationId = await createApplication({
+    name: fields.data.name,
+    userId,
+  });
+
+  redirect(fillDynamicPath(ROUTE_DEVELOPER_APPLICATION, { applicationId }));
 }
 
 export { handleRegisterApplication };
