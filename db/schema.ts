@@ -1,6 +1,13 @@
+import {
+  APPLICATION_DESCRIPTION_LENGTH,
+  APPLICATION_ID_LENGTH,
+  APPLICATION_NAME_LENGTH,
+  APPLICATION_REDIRECT_URL_LENGTH,
+} from "@/constants/applications.constants";
 import { CRYPTO_FIELDS_LENGTH } from "@/constants/crypto.constants";
 import { TIME_FIELDS_LENGTH } from "@/constants/time.constants";
 import { USERS_ID_LENGTH } from "@/constants/users.constants";
+import { generateApplicationId } from "@/helpers/applications.helpers";
 import { getEmail2FAExpirationISODate } from "@/helpers/email2FA.helpers";
 import { ISONow } from "@/helpers/time.helpers";
 import { generateUserId } from "@/helpers/users.helpers";
@@ -49,3 +56,24 @@ export const email2FAs = mysqlTable("email_2fas", {
 });
 export type Email2FA = typeof email2FAs.$inferSelect;
 export type NewEmail2FA = typeof email2FAs.$inferInsert;
+
+export const applications = mysqlTable("applications", {
+  id: varchar("id", { length: APPLICATION_ID_LENGTH })
+    .$defaultFn(generateApplicationId)
+    .primaryKey(),
+  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+    .$defaultFn(ISONow)
+    .notNull(),
+  updatedAt: varchar("updated_at", { length: TIME_FIELDS_LENGTH }),
+  name: varchar("name", { length: APPLICATION_NAME_LENGTH }).notNull(),
+  description: varchar("description", {
+    length: APPLICATION_DESCRIPTION_LENGTH,
+  }),
+  redirectUrl: varchar("redirect_url", {
+    length: APPLICATION_REDIRECT_URL_LENGTH,
+  }),
+  userId: varchar("user_id", { length: USERS_ID_LENGTH }).notNull(),
+});
+
+export type Application = typeof applications.$inferSelect;
+export type NewApplication = typeof applications.$inferInsert;
