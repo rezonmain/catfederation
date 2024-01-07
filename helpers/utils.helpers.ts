@@ -9,4 +9,17 @@ const nil = (val: unknown): val is null | undefined => {
   return val === null || val === undefined;
 };
 
-export { empty, nil };
+/**
+ * Used for boolean values in FormData, let zod coerce the boolean value
+ * @param val
+ * @returns
+ */
+const booleanString = (val: boolean): "true" | "" => {
+  return val ? "true" : "";
+};
+
+const stringToBoolean = (val: string) => {
+  return val === "true" ? true : false;
+};
+
+export { empty, nil, booleanString, stringToBoolean };
