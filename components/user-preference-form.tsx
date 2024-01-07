@@ -20,7 +20,6 @@ import { SubmitButton } from "./submit-button";
 import { useCallback } from "react";
 import { booleanString } from "@/helpers/utils.helpers";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 type UserPreferenceFormProps = {
   action: (data: FormData) => Promise<unknown>;
