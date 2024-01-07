@@ -25,4 +25,18 @@ const getApplicationById = async ({
   )[0];
 };
 
-export { createApplication, getApplicationById };
+const getApplicationsByUserId = async ({
+  userId,
+}: {
+  userId: Application["userId"];
+}) => {
+  return await db
+    .select({
+      id: applications.id,
+      name: applications.name,
+      createdAt: applications.createdAt,
+    })
+    .from(applications)
+    .where(eq(applications.userId, userId));
+};
+export { createApplication, getApplicationById, getApplicationsByUserId };
