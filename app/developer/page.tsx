@@ -22,10 +22,10 @@ export default async function DeveloperPage() {
 
   return (
     <main className="flex flex-col items-center gap-4 p-24">
-      <h1>Developer Page</h1>
       <RegisterApplicationDialog action={handleRegisterApplication}>
         New Application
       </RegisterApplicationDialog>
+      <h2>Applications</h2>
       <div>
         {applications.map((application) => (
           <div key={application.id}>
