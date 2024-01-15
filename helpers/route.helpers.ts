@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { nil } from "@/helpers/utils.helpers";
+import { ServerAction } from "@/types/common.types";
 
 const getServerActionPathname = () => {
   const heads = headers();
@@ -56,4 +57,13 @@ const fillDynamicPath = <S extends string>(
   return parts.join("/");
 };
 
-export { getServerActionPathname, returnWithSearchParams, fillDynamicPath };
+const getBoundedActions = (parameter: unknown, ...actions: ServerAction[]) => {
+  return actions.map((action) => action.bind(null, parameter));
+};
+
+export {
+  getServerActionPathname,
+  returnWithSearchParams,
+  fillDynamicPath,
+  getBoundedActions,
+};
