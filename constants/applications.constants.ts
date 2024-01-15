@@ -22,10 +22,10 @@ const APPLICATION_DESCRIPTION_SCHEMA = z.object({
     ),
 });
 const APPLICATION_REDIRECTS_SCHEMA = z.object({
-  redirectUri: z.string(),
+  redirectUri: z.string().url("Redirect must be a valid URL"),
 });
 const APPLICATION_DELETE_REDIRECT_SCHEMA = z.object({
-  redirectId: z.string(),
+  redirectId: z.coerce.number(),
 });
 
 export {
