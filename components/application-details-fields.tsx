@@ -1,15 +1,12 @@
-"use client";
 import {
+  APPLICATION_DESCRIPTION_LENGTH,
   APPLICATION_DESCRIPTION_SCHEMA,
+  APPLICATION_NAME_LENGTH,
   APPLICATION_NAME_SCHEMA,
 } from "@/constants/applications.constants";
 import { type ServerAction } from "@/types/common.types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form, FormControl, FormField, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import { useCallback } from "react";
 import { SubmitButton } from "./submit-button";
 import { ApplicationRedirect } from "@/db/schema";
 import { Button } from "./ui/button";
@@ -26,47 +23,27 @@ import {
 
 type ApplicationDetailsFieldsProps<T> = {
   action: ServerAction;
-  defaultValues: T;
+} & {
+  [k in keyof T]: T[k];
 };
 
 type ApplicationName = z.infer<typeof APPLICATION_NAME_SCHEMA>;
 
 const ApplicationNameField: React.FC<
   ApplicationDetailsFieldsProps<ApplicationName>
-> = ({ action, defaultValues }) => {
-  const form = useForm<ApplicationName>({
-    resolver: zodResolver(APPLICATION_NAME_SCHEMA),
-    defaultValues,
-  });
-
-  const onSubmit = useCallback(
-    async (data: ApplicationName) => {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      await action(formData);
-    },
-    [action]
-  );
-
+> = ({ action, name }) => {
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
-              <p className="uppercase tracking-wider">Name</p>
-              <FormControl>
-                <Input value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-              <SubmitButton variant="link">Save name</SubmitButton>
-            </label>
-          )}
+    <form action={action}>
+      <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
+        <p className="uppercase tracking-wider">Name</p>
+        <Input
+          defaultValue={name}
+          type="text"
+          maxLength={APPLICATION_NAME_LENGTH}
         />
-      </form>
-    </Form>
+        <SubmitButton variant="link">Save name</SubmitButton>
+      </label>
+    </form>
   );
 };
 
@@ -74,40 +51,19 @@ type ApplicationDescription = z.infer<typeof APPLICATION_DESCRIPTION_SCHEMA>;
 
 const ApplicationDescriptionField: React.FC<
   ApplicationDetailsFieldsProps<ApplicationDescription>
-> = ({ action, defaultValues }) => {
-  const form = useForm<ApplicationDescription>({
-    resolver: zodResolver(APPLICATION_DESCRIPTION_SCHEMA),
-    defaultValues,
-  });
-
-  const onSubmit = useCallback(
-    async (data: ApplicationDescription) => {
-      const formData = new FormData();
-      formData.append("description", data.description);
-      await action(formData);
-    },
-    [action]
-  );
-
+> = ({ action, description }) => {
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
-              <p className="uppercase tracking-wider">Description</p>
-              <FormControl>
-                <Input value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-              <SubmitButton variant="link">Save description</SubmitButton>
-            </label>
-          )}
+    <form action={action}>
+      <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
+        <p className="uppercase tracking-wider">Description</p>
+        <Input
+          defaultValue={description}
+          type="text"
+          maxLength={APPLICATION_DESCRIPTION_LENGTH}
         />
-      </form>
-    </Form>
+        <SubmitButton variant="link">Save description</SubmitButton>
+      </label>
+    </form>
   );
 };
 
@@ -138,10 +94,8 @@ const ApplicationRedirectFields: React.FC<ApplicationRedirectProps> = ({
         ))}
       </ol>
       <form action={createAction}>
-        <Input name="redirectUri" />
-        <SubmitButton form="create-redirect-form" variant="link">
-          Save redirect
-        </SubmitButton>
+        <Input name="redirectUri" type="url" />
+        <SubmitButton variant="link">Save redirect</SubmitButton>
       </form>
     </div>
   );
@@ -168,9 +122,9 @@ const DeleteRedirectDialog: React.FC<DeleteRedirectDialogProps> = ({
           <DialogTitle className="uppercase tracking-wider">
             Confirm redirect deletion
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="py-3">
             Are you sure you want to delete the redirect{" "}
-            <span className="font-mono">{redirect.uri}</span>?
+            <span className="font-mono">{redirect.uri}</span> ?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
