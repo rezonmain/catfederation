@@ -5,7 +5,7 @@ import {
   PREFERENCE_DEFAULT_VALUES,
 } from "@/constants/preference.constants";
 import { stringToBoolean, nil } from "@/helpers/utils.helpers";
-import { UserPreferences } from "@/types/preference.type";
+import { UserPreferences } from "@/types/preference.types";
 
 const getUserPreferenceCookieValue = (userPreferences: UserPreferences) => {
   return Object.values(userPreferences).join("|");

@@ -1,4 +1,4 @@
-import { UserPreferences } from "@/types/preference.type";
+import { UserPreferences } from "@/types/preference.types";
 import { z } from "zod";
 
 const PREFERENCE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 100; // 100 years

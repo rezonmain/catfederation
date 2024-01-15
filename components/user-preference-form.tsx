@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { UserPreferences } from "@/types/preference.type";
+import { UserPreferences } from "@/types/preference.types";
 import {
   PREFERENCES_SCHEMA,
   PREFERENCE_ALIAS_MAX_LENGTH,
