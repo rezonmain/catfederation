@@ -5,8 +5,22 @@ import {
   APPLICATION_NAME_SCHEMA,
   APPLICATION_REDIRECTS_SCHEMA,
 } from "@/constants/applications.constants";
+import { Application } from "@/db/schema";
+import { getServerActionPathname } from "@/helpers/route.helpers";
+import {
+  createApplicationRedirect,
+  deleteApplicationRedirect,
+} from "@/repositories/applicationRedirects.repository";
+import {
+  updateApplicationDescription,
+  updateApplicationName,
+} from "@/repositories/applications.repository";
+import { revalidatePath } from "next/cache";
 
-async function handleEditApplicationName(data: FormData) {
+async function handleEditApplicationName(
+  applicationId: Application["id"],
+  data: FormData
+) {
   const fields = APPLICATION_NAME_SCHEMA.safeParse({
     name: data.get("name"),
   });
@@ -17,10 +31,14 @@ async function handleEditApplicationName(data: FormData) {
     };
   }
 
-  console.log(fields.data.name);
+  await updateApplicationName({ applicationId, name: fields.data.name });
+  revalidatePath(getServerActionPathname());
 }
 
-async function handleEditApplicationDescription(data: FormData) {
+async function handleEditApplicationDescription(
+  applicationId: Application["id"],
+  data: FormData
+) {
   const fields = APPLICATION_DESCRIPTION_SCHEMA.safeParse({
     name: data.get("description"),
   });
@@ -31,15 +49,19 @@ async function handleEditApplicationDescription(data: FormData) {
     };
   }
 
-  console.log(fields.data.description);
+  await updateApplicationDescription({
+    applicationId,
+    description: fields.data.description,
+  });
+  revalidatePath(getServerActionPathname());
 }
 
 async function handleCreateApplicationRedirect(
-  applicationId: string,
+  applicationId: Application["id"],
   data: FormData
 ) {
   const fields = APPLICATION_REDIRECTS_SCHEMA.safeParse({
-    redirectUri: data.getAll("redirects"),
+    redirectUri: data.get("redirectUri"),
   });
 
   if (!fields.success) {
@@ -47,8 +69,11 @@ async function handleCreateApplicationRedirect(
       errors: fields.error.flatten().fieldErrors,
     };
   }
-
-  console.log(fields.data.redirectUri, applicationId);
+  await createApplicationRedirect({
+    uri: fields.data.redirectUri,
+    applicationId,
+  });
+  revalidatePath(getServerActionPathname());
 }
 
 async function handleDeleteApplicationRedirect(data: FormData) {
@@ -62,8 +87,10 @@ async function handleDeleteApplicationRedirect(data: FormData) {
     };
   }
 
-  console.log(fields.data.redirectId);
+  await deleteApplicationRedirect({ redirectId: fields.data.redirectId });
+  revalidatePath(getServerActionPathname());
 }
+
 export {
   handleEditApplicationName,
   handleEditApplicationDescription,
