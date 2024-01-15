@@ -33,7 +33,6 @@ export const users = mysqlTable(
   },
   (table) => {
     return {
-      idIdx: uniqueIndex("id_idx").on(table.id),
       credIdx: uniqueIndex("cred_idx").on(table.cred),
     };
   }
@@ -69,29 +68,24 @@ export const applications = mysqlTable("applications", {
   description: varchar("description", {
     length: APPLICATION_DESCRIPTION_LENGTH,
   }),
-  userId: varchar("user_id", { length: USERS_ID_LENGTH }).notNull(),
+  userId: varchar("user_id", { length: USERS_ID_LENGTH })
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
 });
 export type Application = typeof applications.$inferSelect;
 export type NewApplication = typeof applications.$inferInsert;
 
-export const application_redirects = mysqlTable(
-  "application_redirects",
-  {
-    id: serial("id").primaryKey(),
-    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
-      .$defaultFn(ISONow)
-      .notNull(),
-    updatedAt: varchar("updated_at", { length: TIME_FIELDS_LENGTH }),
-    applicationId: varchar("application_id", {
-      length: APPLICATION_ID_LENGTH,
-    }).notNull(),
-    uri: varchar("uri", { length: APPLICATION_REDIRECT_URL_LENGTH }).notNull(),
-  },
-  (table) => {
-    return {
-      applicationIdx: uniqueIndex("application_id_idx").on(table.applicationId),
-    };
-  }
-);
-export type ApplicationRedirect = typeof application_redirects.$inferSelect;
-export type NewApplicationRedirect = typeof application_redirects.$inferInsert;
+export const applicationRedirects = mysqlTable("application_redirects", {
+  id: serial("id").primaryKey(),
+  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+    .$defaultFn(ISONow)
+    .notNull(),
+  uri: varchar("uri", { length: APPLICATION_REDIRECT_URL_LENGTH }).notNull(),
+  applicationId: varchar("application_id", {
+    length: APPLICATION_ID_LENGTH,
+  })
+    .references(() => applications.id, { onDelete: "cascade" })
+    .notNull(),
+});
+export type ApplicationRedirect = typeof applicationRedirects.$inferSelect;
+export type NewApplicationRedirect = typeof applicationRedirects.$inferInsert;
