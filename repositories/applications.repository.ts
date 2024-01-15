@@ -39,4 +39,37 @@ const getApplicationsByUserId = async ({
     .from(applications)
     .where(eq(applications.userId, userId));
 };
-export { createApplication, getApplicationById, getApplicationsByUserId };
+
+const updateApplicationDescription = async ({
+  applicationId,
+  description,
+}: {
+  applicationId: Application["id"];
+  description: Application["description"];
+}) => {
+  await db
+    .update(applications)
+    .set({ description })
+    .where(eq(applications.id, applicationId));
+};
+
+const updateApplicationName = async ({
+  applicationId,
+  name,
+}: {
+  applicationId: Application["id"];
+  name: Application["name"];
+}) => {
+  await db
+    .update(applications)
+    .set({ name })
+    .where(eq(applications.id, applicationId));
+};
+
+export {
+  createApplication,
+  getApplicationById,
+  getApplicationsByUserId,
+  updateApplicationDescription,
+  updateApplicationName,
+};
