@@ -24,4 +24,18 @@ const getApplicationRedirects = async ({
     .where(eq(applicationRedirects.applicationId, applicationId));
 };
 
-export { createApplicationRedirect, getApplicationRedirects };
+const deleteApplicationRedirect = async ({
+  redirectId,
+}: {
+  redirectId: ApplicationRedirect["id"];
+}) => {
+  await db
+    .delete(applicationRedirects)
+    .where(eq(applicationRedirects.id, redirectId));
+};
+
+export {
+  createApplicationRedirect,
+  getApplicationRedirects,
+  deleteApplicationRedirect,
+};
