@@ -56,36 +56,52 @@ export const email2FAs = mysqlTable("email_2fas", {
 export type Email2FA = typeof email2FAs.$inferSelect;
 export type NewEmail2FA = typeof email2FAs.$inferInsert;
 
-export const applications = mysqlTable("applications", {
-  id: varchar("id", { length: APPLICATION_ID_LENGTH })
-    .$defaultFn(generateApplicationId)
-    .primaryKey(),
-  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
-    .$defaultFn(ISONow)
-    .notNull(),
-  updatedAt: varchar("updated_at", { length: TIME_FIELDS_LENGTH }),
-  name: varchar("name", { length: APPLICATION_NAME_LENGTH }).notNull(),
-  description: varchar("description", {
-    length: APPLICATION_DESCRIPTION_LENGTH,
-  }),
-  userId: varchar("user_id", { length: USERS_ID_LENGTH })
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
-});
+export const applications = mysqlTable(
+  "applications",
+  {
+    id: varchar("id", { length: APPLICATION_ID_LENGTH })
+      .$defaultFn(generateApplicationId)
+      .primaryKey(),
+    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+      .$defaultFn(ISONow)
+      .notNull(),
+    updatedAt: varchar("updated_at", { length: TIME_FIELDS_LENGTH }),
+    name: varchar("name", { length: APPLICATION_NAME_LENGTH }).notNull(),
+    description: varchar("description", {
+      length: APPLICATION_DESCRIPTION_LENGTH,
+    }),
+    userId: varchar("user_id", { length: USERS_ID_LENGTH })
+      // .references(() => users.id, { onDelete: "cascade" }) - planet scale does not support FK constraints yet
+      .notNull(),
+  },
+  (table) => {
+    return {
+      userIdx: uniqueIndex("user_idx").on(table.userId), // Remove when planet scale supports FK constraints
+    };
+  }
+);
 export type Application = typeof applications.$inferSelect;
 export type NewApplication = typeof applications.$inferInsert;
 
-export const applicationRedirects = mysqlTable("application_redirects", {
-  id: serial("id").primaryKey(),
-  createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
-    .$defaultFn(ISONow)
-    .notNull(),
-  uri: varchar("uri", { length: APPLICATION_REDIRECT_URL_LENGTH }).notNull(),
-  applicationId: varchar("application_id", {
-    length: APPLICATION_ID_LENGTH,
-  })
-    .references(() => applications.id, { onDelete: "cascade" })
-    .notNull(),
-});
+export const applicationRedirects = mysqlTable(
+  "application_redirects",
+  {
+    id: serial("id").primaryKey(),
+    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+      .$defaultFn(ISONow)
+      .notNull(),
+    uri: varchar("uri", { length: APPLICATION_REDIRECT_URL_LENGTH }).notNull(),
+    applicationId: varchar("application_id", {
+      length: APPLICATION_ID_LENGTH,
+    })
+      // .references(() => applications.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => {
+    return {
+      applicationIdx: uniqueIndex("application_idx").on(table.applicationId), // Remove when planet scale supports FK constraints
+    };
+  }
+);
 export type ApplicationRedirect = typeof applicationRedirects.$inferSelect;
 export type NewApplicationRedirect = typeof applicationRedirects.$inferInsert;
