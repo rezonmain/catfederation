@@ -13,6 +13,7 @@ import {
 } from "./actions";
 import { ClipboardButton } from "@/components/clipboard-button";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
+import { getBoundedActions } from "@/helpers/route.helpers";
 
 export default async function ApplicationPage({
   params,
@@ -29,17 +30,21 @@ export default async function ApplicationPage({
     applicationId: params.applicationId,
   });
 
+  const [editName, editDescription, createRedirect] = getBoundedActions(
+    application.id,
+    handleEditApplicationName,
+    handleEditApplicationDescription,
+    handleCreateApplicationRedirect
+  );
+
   return (
     <main className="flex flex-col gap-6 p-24">
       <h1 className="uppercase tracking-wider text-xl">{application.name}</h1>
       <h2>General information</h2>
-      <ApplicationNameField
-        action={handleEditApplicationName}
-        defaultValues={{ name: application.name }}
-      />
+      <ApplicationNameField action={editName} name={application.name ?? ""} />
       <ApplicationDescriptionField
-        action={handleEditApplicationDescription}
-        defaultValues={{ description: application.description ?? "" }}
+        action={editDescription}
+        description={application.description ?? ""}
       />
       <label className="cursor-pointer rounded-lg border p-4">
         <div className="flex flex-row gap-4 items-center">
@@ -54,10 +59,7 @@ export default async function ApplicationPage({
         </div>
       </label>
       <ApplicationRedirectFields
-        createAction={handleCreateApplicationRedirect.bind(
-          null,
-          application.id
-        )}
+        createAction={createRedirect}
         deleteAction={handleDeleteApplicationRedirect}
         redirects={redirects}
       />
