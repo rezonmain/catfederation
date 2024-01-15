@@ -16,6 +16,7 @@ import {
   varchar,
   mysqlTable,
   uniqueIndex,
+  index,
 } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable(
@@ -76,7 +77,7 @@ export const applications = mysqlTable(
   },
   (table) => {
     return {
-      userIdx: uniqueIndex("user_idx").on(table.userId), // Remove when planet scale supports FK constraints
+      userIdx: index("user_idx").on(table.userId), // Remove when planet scale supports FK constraints
     };
   }
 );
@@ -99,7 +100,7 @@ export const applicationRedirects = mysqlTable(
   },
   (table) => {
     return {
-      applicationIdx: uniqueIndex("application_idx").on(table.applicationId), // Remove when planet scale supports FK constraints
+      applicationIdx: index("application_idx").on(table.applicationId), // Remove when planet scale supports FK constraints
     };
   }
 );
