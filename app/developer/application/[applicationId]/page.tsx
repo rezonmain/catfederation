@@ -1,7 +1,7 @@
 import {
   ApplicationDescriptionField,
   ApplicationNameField,
-  ApplicationRedirectFields,
+  ApplicationRedirectField,
 } from "@/components/application-details-fields";
 import { auth } from "@/helpers/session.helpers";
 import { getApplicationById } from "@/repositories/applications.repository";
@@ -58,7 +58,7 @@ export default async function ApplicationPage({
           </div>
         </div>
       </label>
-      <ApplicationRedirectFields
+      <ApplicationRedirectField
         createAction={createRedirect}
         deleteAction={handleDeleteApplicationRedirect}
         redirects={redirects}

@@ -77,7 +77,7 @@ type ApplicationRedirectProps = {
   redirects: ApplicationRedirect[];
 };
 
-const ApplicationRedirectFields: React.FC<ApplicationRedirectProps> = ({
+const ApplicationRedirectField: React.FC<ApplicationRedirectProps> = ({
   createAction,
   deleteAction,
   redirects,
@@ -156,5 +156,5 @@ const DeleteRedirectDialog: React.FC<DeleteRedirectDialogProps> = ({
 export {
   ApplicationNameField,
   ApplicationDescriptionField,
-  ApplicationRedirectFields,
+  ApplicationRedirectField,
 };
