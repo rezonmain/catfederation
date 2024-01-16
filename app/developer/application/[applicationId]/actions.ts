@@ -40,7 +40,7 @@ async function handleEditApplicationDescription(
   data: FormData
 ) {
   const fields = APPLICATION_DESCRIPTION_SCHEMA.safeParse({
-    name: data.get("description"),
+    description: data.get("description"),
   });
 
   if (!fields.success) {
