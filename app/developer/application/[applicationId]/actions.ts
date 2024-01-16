@@ -1,10 +1,12 @@
 "use server";
 import {
   APPLICATION_DELETE_REDIRECT_SCHEMA,
+  APPLICATION_DELETE_SCHEMA,
   APPLICATION_DESCRIPTION_SCHEMA,
   APPLICATION_NAME_SCHEMA,
   APPLICATION_REDIRECTS_SCHEMA,
 } from "@/constants/applications.constants";
+import { ROUTE_DEVELOPER } from "@/constants/route.constants";
 import { Application } from "@/db/schema";
 import { getServerActionPathname } from "@/helpers/route.helpers";
 import {
@@ -12,10 +14,12 @@ import {
   deleteApplicationRedirect,
 } from "@/repositories/applicationRedirects.repository";
 import {
+  deleteApplicationById,
   updateApplicationDescription,
   updateApplicationName,
 } from "@/repositories/applications.repository";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 async function handleEditApplicationName(
   applicationId: Application["id"],
@@ -91,9 +95,25 @@ async function handleDeleteApplicationRedirect(data: FormData) {
   revalidatePath(getServerActionPathname());
 }
 
+async function handleDeleteApplication(data: FormData) {
+  const fields = APPLICATION_DELETE_SCHEMA.safeParse({
+    applicationId: data.get("applicationId"),
+  });
+
+  if (!fields.success) {
+    return {
+      errors: fields.error.flatten().fieldErrors,
+    };
+  }
+
+  await deleteApplicationById({ applicationId: fields.data.applicationId });
+  redirect(ROUTE_DEVELOPER);
+}
+
 export {
   handleEditApplicationName,
   handleEditApplicationDescription,
   handleCreateApplicationRedirect,
   handleDeleteApplicationRedirect,
+  handleDeleteApplication,
 };
