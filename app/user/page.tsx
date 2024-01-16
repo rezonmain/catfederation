@@ -10,7 +10,7 @@ export default function UserPage() {
   const preferences = userPreferences();
 
   return (
-    <main className="flex flex-col items-center gap-4 p-24">
+    <main className="flex flex-col gap-6 p-24">
       {preferences.alias ? (
         <h1>Hi {preferences.alias}!</h1>
       ) : (
@@ -19,7 +19,7 @@ export default function UserPage() {
       {preferences.isDeveloper && (
         <Link href={ROUTE_DEVELOPER}>Go to developer dashboard</Link>
       )}
-      <section className="max-w-md">
+      <section>
         <UserPreferenceForm
           action={handleUserPreferences}
           defaultValues={preferences}
