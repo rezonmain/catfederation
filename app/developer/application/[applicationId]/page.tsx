@@ -61,6 +61,7 @@ export default async function ApplicationPage({
       <ApplicationRedirectField
         createAction={createRedirect}
         deleteAction={handleDeleteApplicationRedirect}
+        applicationName={application.name}
         redirects={redirects}
       />
     </main>

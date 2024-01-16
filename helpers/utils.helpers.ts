@@ -22,4 +22,10 @@ const stringToBoolean = (val: string) => {
   return val === "true" ? true : false;
 };
 
-export { empty, nil, booleanString, stringToBoolean };
+const noop = () => {};
+
+const delayCall = (fn: () => void, delay: number) => {
+  setTimeout(fn, delay);
+};
+
+export { empty, nil, booleanString, stringToBoolean, noop, delayCall };
