@@ -57,8 +57,17 @@ const fillDynamicPath = <S extends string>(
   return parts.join("/");
 };
 
-const getBoundedActions = (parameter: unknown, ...actions: ServerAction[]) => {
-  return actions.map((action) => action.bind(null, parameter));
+/**
+ * Bind a parameter to multiple server action functions, [Nextjs docs](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#passing-additional-arguments)
+ * @param parameterToBind
+ * @param actions
+ * @returns
+ */
+const getBoundedActions = (
+  parameterToBind: unknown,
+  ...actions: ServerAction[]
+): ServerAction[] => {
+  return actions.map((action) => action.bind(null, parameterToBind));
 };
 
 export {
