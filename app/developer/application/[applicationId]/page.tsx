@@ -24,13 +24,10 @@ export default async function ApplicationPage({
 }) {
   auth();
 
-  const application = await getApplicationById({
-    applicationId: params.applicationId,
-  });
-
-  const redirects = await getApplicationRedirects({
-    applicationId: params.applicationId,
-  });
+  const [application, redirects] = await Promise.all([
+    getApplicationById({ applicationId: params.applicationId }),
+    getApplicationRedirects({ applicationId: params.applicationId }),
+  ]);
 
   const [editName, editDescription, createRedirect] = getBoundedActions(
     application.id,
