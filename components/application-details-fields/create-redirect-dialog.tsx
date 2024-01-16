@@ -1,4 +1,5 @@
 "use client";
+import { useCallback, useState } from "react";
 import { Application } from "@/db/schema";
 import { getRedirectUriPlaceholder } from "@/helpers/ui/application-details-fields.helpers";
 import { delayCall, empty } from "@/helpers/utils.helpers";
@@ -16,7 +17,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
 
 type CreateRedirectDialogProps = {
   action: ServerAction;
@@ -30,6 +30,11 @@ const CreateRedirectDialog: React.FC<CreateRedirectDialogProps> = ({
   applicationName,
 }) => {
   const [open, setOpen] = useState(false);
+
+  const onSubmit = useCallback(
+    () => delayCall(() => setOpen(false), 750),
+    [setOpen]
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -45,12 +50,16 @@ const CreateRedirectDialog: React.FC<CreateRedirectDialogProps> = ({
             Add a redirect URI to your application.
           </DialogDescription>
         </DialogHeader>
-        <form action={action} className="flex flex-col gap-4">
+        <form
+          action={action}
+          onSubmit={onSubmit}
+          className="flex flex-col gap-4"
+        >
           <Input
             name="redirectUri"
             type="url"
             required
-            className="font-mono"
+            className="font-mono placeholder:italic"
             placeholder={
               empty(applicationName)
                 ? "http://localhost:3000"
