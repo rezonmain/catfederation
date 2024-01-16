@@ -40,7 +40,7 @@ export default async function ApplicationPage({
   return (
     <main className="flex flex-col gap-6 p-24">
       <h1 className="uppercase tracking-wider text-xl">{application.name}</h1>
-      <h2>General information</h2>
+      <h2>OAuth information</h2>
       <ApplicationNameField action={editName} name={application.name ?? ""} />
       <ApplicationDescriptionField
         action={editDescription}
