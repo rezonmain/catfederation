@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { empty } from "@/helpers/utils.helpers";
 
 type ApplicationDetailsFieldsProps<T> = {
   action: ServerAction;
@@ -43,7 +44,7 @@ const ApplicationNameField: React.FC<
           maxLength={APPLICATION_NAME_LENGTH}
           required
         />
-        <SubmitButton variant="link">Save name</SubmitButton>
+        <SubmitButton variant="outline">Save name</SubmitButton>
       </label>
     </form>
   );
@@ -64,7 +65,7 @@ const ApplicationDescriptionField: React.FC<
           type="text"
           maxLength={APPLICATION_DESCRIPTION_LENGTH}
         />
-        <SubmitButton variant="link">Save description</SubmitButton>
+        <SubmitButton variant="outline">Save description</SubmitButton>
       </label>
     </form>
   );
@@ -82,23 +83,29 @@ const ApplicationRedirectFields: React.FC<ApplicationRedirectProps> = ({
   redirects,
 }) => {
   return (
-    <div className="rounded-lg border p-4">
+    <div className="rounded-lg border p-4 flex flex-col gap-4">
       <p className="uppercase tracking-wider">Redirects</p>
-      <ol>
-        {redirects.map((redirect) => (
-          <li key={redirect.id}>
-            <div className="flex flex-row gap-4 items-center">
-              <span className="font-mono">{redirect.uri}</span>
-              <DeleteRedirectDialog redirect={redirect} action={deleteAction}>
-                Delete
-              </DeleteRedirectDialog>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <form action={createAction}>
-        <Input name="redirectUri" type="url" required />
-        <SubmitButton variant="link">Save redirect</SubmitButton>
+      {empty(redirects) ? (
+        <p className="text-muted-foreground">
+          No redirects URI&apos;s where found for this application
+        </p>
+      ) : (
+        <ol>
+          {redirects.map((redirect) => (
+            <li key={redirect.id}>
+              <div className="flex flex-row gap-4 items-center">
+                <span className="font-mono">{redirect.uri}</span>
+                <DeleteRedirectDialog redirect={redirect} action={deleteAction}>
+                  Delete
+                </DeleteRedirectDialog>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+      <form action={createAction} className="flex flex-col gap-4 items-start">
+        <Input name="redirectUri" type="url" required className="font-mono" />
+        <SubmitButton variant="outline">Add redirect</SubmitButton>
       </form>
     </div>
   );
@@ -118,7 +125,7 @@ const DeleteRedirectDialog: React.FC<DeleteRedirectDialogProps> = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>{children}</Button>
+        <Button variant="link">{children}</Button>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
