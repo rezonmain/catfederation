@@ -57,7 +57,7 @@ const UserPreferenceForm: React.FC<UserPreferenceFormProps> = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-4"
+        className="w-full flex flex-col gap-4 items-start"
       >
         <h1 className="text-lg font-medium">User preferences</h1>
         <div className="flex flex-col gap-4">
