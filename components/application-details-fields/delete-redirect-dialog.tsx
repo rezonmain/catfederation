@@ -46,7 +46,7 @@ const DeleteRedirectDialog: React.FC<DeleteRedirectDialogProps> = ({
             </Button>
           </DialogClose>
           <form action={action}>
-            <input type="hidden" name="redirectId" value={redirect.id}></input>
+            <input type="hidden" name="redirectId" value={redirect.id} />
             <SubmitButton variant="destructive">Delete</SubmitButton>
           </form>
         </DialogFooter>
