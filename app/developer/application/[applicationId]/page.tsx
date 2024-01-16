@@ -7,6 +7,7 @@ import { auth } from "@/helpers/session.helpers";
 import { getApplicationById } from "@/repositories/applications.repository";
 import {
   handleCreateApplicationRedirect,
+  handleDeleteApplication,
   handleDeleteApplicationRedirect,
   handleEditApplicationDescription,
   handleEditApplicationName,
@@ -14,6 +15,7 @@ import {
 import { ClipboardButton } from "@/components/clipboard-button";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
 import { getBoundedActions } from "@/helpers/route.helpers";
+import { DeleteApplicationDialog } from "@/components/delete-application-dialog";
 
 export default async function ApplicationPage({
   params,
@@ -64,6 +66,13 @@ export default async function ApplicationPage({
         applicationName={application.name}
         redirects={redirects}
       />
+      <DeleteApplicationDialog
+        action={handleDeleteApplication}
+        application={application}
+        className="self-start"
+      >
+        Delete application
+      </DeleteApplicationDialog>
     </main>
   );
 }
