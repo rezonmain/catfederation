@@ -66,10 +66,19 @@ const updateApplicationName = async ({
     .where(eq(applications.id, applicationId));
 };
 
+const deleteApplicationById = async ({
+  applicationId,
+}: {
+  applicationId: Application["id"];
+}) => {
+  await db.delete(applications).where(eq(applications.id, applicationId));
+};
+
 export {
   createApplication,
   getApplicationById,
   getApplicationsByUserId,
   updateApplicationDescription,
   updateApplicationName,
+  deleteApplicationById,
 };
