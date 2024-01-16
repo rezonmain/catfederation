@@ -35,7 +35,7 @@ const RegisterApplicationDialog: React.FC<RegisterApplicationDialogProps> = ({
             Register an application to use catfederation as an OAuth2 provider.
           </DialogDescription>
         </DialogHeader>
-        <form id="register-new-app-form" action={action}>
+        <form action={action} className="flex flex-col gap-4">
           <label className="flex flex-col gap-2">
             Name
             <Input
@@ -47,15 +47,15 @@ const RegisterApplicationDialog: React.FC<RegisterApplicationDialogProps> = ({
               className="border border-gray-300 rounded-md"
             />
           </label>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
+            </DialogClose>
+            <SubmitButton>Register</SubmitButton>
+          </DialogFooter>
         </form>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Cancel
-            </Button>
-          </DialogClose>
-          <SubmitButton form="register-new-app-form">Register</SubmitButton>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
