@@ -37,9 +37,11 @@ const ApplicationNameField: React.FC<
       <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
         <p className="uppercase tracking-wider">Name</p>
         <Input
+          name="name"
           defaultValue={name}
           type="text"
           maxLength={APPLICATION_NAME_LENGTH}
+          required
         />
         <SubmitButton variant="link">Save name</SubmitButton>
       </label>
@@ -57,6 +59,7 @@ const ApplicationDescriptionField: React.FC<
       <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
         <p className="uppercase tracking-wider">Description</p>
         <Input
+          name="description"
           defaultValue={description}
           type="text"
           maxLength={APPLICATION_DESCRIPTION_LENGTH}
@@ -94,7 +97,7 @@ const ApplicationRedirectFields: React.FC<ApplicationRedirectProps> = ({
         ))}
       </ol>
       <form action={createAction}>
-        <Input name="redirectUri" type="url" />
+        <Input name="redirectUri" type="url" required />
         <SubmitButton variant="link">Save redirect</SubmitButton>
       </form>
     </div>
