@@ -18,7 +18,7 @@ const ApplicationRedirectField: React.FC<ApplicationRedirectProps> = ({
   applicationName = "",
 }) => {
   return (
-    <div className="rounded-lg border p-4 flex flex-col gap-4 item-start">
+    <div className="rounded-lg border p-4 flex flex-col gap-4 items-start">
       <p className="uppercase tracking-wider">Redirects</p>
       {empty(redirects) ? (
         <p className="text-muted-foreground">
