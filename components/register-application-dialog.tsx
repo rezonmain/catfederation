@@ -44,7 +44,6 @@ const RegisterApplicationDialog: React.FC<RegisterApplicationDialogProps> = ({
               type="text"
               placeholder="My Application"
               required
-              className="border border-gray-300 rounded-md"
             />
           </label>
           <DialogFooter>
