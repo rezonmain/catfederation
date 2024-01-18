@@ -1,7 +1,7 @@
+import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
 import { Application, NewApplication, applications } from "@/db/schema";
 import { generateApplicationId } from "@/helpers/applications.helpers";
-import { eq } from "drizzle-orm";
 
 const createApplication = async ({
   name,
