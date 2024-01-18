@@ -7,6 +7,9 @@ import {
 } from "@/constants/crypto.constants";
 import Encrypted from "@/helpers/Encrypted";
 
+const getRandomBytes = (bytes: number) =>
+  crypto.randomBytes(bytes).toString("hex");
+
 const generateSecureHash = (password: string) => {
   return argon2.hash(password);
 };
@@ -69,4 +72,5 @@ export {
   decrypt,
   generateHash,
   generateCred,
+  getRandomBytes,
 };
