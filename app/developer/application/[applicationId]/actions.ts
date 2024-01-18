@@ -95,18 +95,8 @@ async function handleDeleteApplicationRedirect(data: FormData) {
   revalidatePath(getServerActionPathname());
 }
 
-async function handleDeleteApplication(data: FormData) {
-  const fields = APPLICATION_DELETE_SCHEMA.safeParse({
-    applicationId: data.get("applicationId"),
-  });
-
-  if (!fields.success) {
-    return {
-      errors: fields.error.flatten().fieldErrors,
-    };
-  }
-
-  await deleteApplicationById({ applicationId: fields.data.applicationId });
+async function handleDeleteApplication(applicationId: Application["id"]) {
+  await deleteApplicationById({ applicationId });
   redirect(ROUTE_DEVELOPER);
 }
 
