@@ -15,14 +15,14 @@ import { SubmitButton } from "@/components/submit-button";
 
 type DeleteApplicationDialogProps = {
   action: ServerAction;
-  application: Application;
+  applicationName: Application["name"];
   children: React.ReactNode;
   className?: string;
 };
 
 const DeleteApplicationDialog: React.FC<DeleteApplicationDialogProps> = ({
   action,
-  application,
+  applicationName,
   children,
   className,
 }) => {
@@ -40,7 +40,7 @@ const DeleteApplicationDialog: React.FC<DeleteApplicationDialogProps> = ({
           </DialogTitle>
           <DialogDescription className="py-3">
             Are you sure you want to delete{" "}
-            <span className="uppercase tracking-wider">{application.name}</span>{" "}
+            <span className="uppercase tracking-wider">{applicationName}</span>{" "}
             ?
           </DialogDescription>
         </DialogHeader>
@@ -51,7 +51,6 @@ const DeleteApplicationDialog: React.FC<DeleteApplicationDialogProps> = ({
             </Button>
           </DialogClose>
           <form action={action}>
-            <input type="hidden" name="applicationId" value={application.id} />
             <SubmitButton variant="destructive">Delete</SubmitButton>
           </form>
         </DialogFooter>
