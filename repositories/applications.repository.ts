@@ -19,7 +19,11 @@ const getApplicationById = async ({
 }) => {
   return (
     await db
-      .select()
+      .select({
+        id: applications.id,
+        name: applications.name,
+        description: applications.description,
+      })
       .from(applications)
       .where(eq(applications.id, applicationId))
   )[0];
