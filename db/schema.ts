@@ -74,6 +74,7 @@ export const applications = mysqlTable(
     userId: varchar("user_id", { length: USERS_ID_LENGTH })
       // .references(() => users.id, { onDelete: "cascade" }) - planet scale does not support FK constraints yet
       .notNull(),
+    hash: varchar("hash", { length: CRYPTO_FIELDS_LENGTH }),
   },
   (table) => {
     return {
