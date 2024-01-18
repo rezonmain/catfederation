@@ -5,17 +5,11 @@ import {
 } from "@/components/application-details-fields";
 import { auth } from "@/helpers/session.helpers";
 import { getApplicationById } from "@/repositories/applications.repository";
-import {
-  handleCreateApplicationRedirect,
-  handleDeleteApplication,
-  handleDeleteApplicationRedirect,
-  handleEditApplicationDescription,
-  handleEditApplicationName,
-} from "./actions";
+import { handleDeleteApplicationRedirect } from "./actions";
 import { ClipboardButton } from "@/components/clipboard-button";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
-import { getBoundedActions } from "@/helpers/route.helpers";
 import { DeleteApplicationDialog } from "@/components/delete-application-dialog";
+import { getApplicationPageActions } from "@/helpers/applications.helpers";
 
 export default async function ApplicationPage({
   params,
@@ -29,20 +23,18 @@ export default async function ApplicationPage({
     getApplicationRedirects({ applicationId: params.applicationId }),
   ]);
 
-  const [editName, editDescription, createRedirect] = getBoundedActions(
-    application.id,
-    handleEditApplicationName,
-    handleEditApplicationDescription,
-    handleCreateApplicationRedirect
-  );
+  const actions = getApplicationPageActions(application.id);
 
   return (
     <main className="flex flex-col gap-6 p-24">
       <h1 className="uppercase tracking-wider text-xl">{application.name}</h1>
       <h2>OAuth information</h2>
-      <ApplicationNameField action={editName} name={application.name ?? ""} />
+      <ApplicationNameField
+        action={actions.editName}
+        name={application.name ?? ""}
+      />
       <ApplicationDescriptionField
-        action={editDescription}
+        action={actions.editDescription}
         description={application.description ?? ""}
       />
       <label className="cursor-pointer rounded-lg border p-4">
@@ -58,14 +50,14 @@ export default async function ApplicationPage({
         </div>
       </label>
       <ApplicationRedirectField
-        createAction={createRedirect}
+        createAction={actions.createRedirect}
         deleteAction={handleDeleteApplicationRedirect}
         applicationName={application.name}
         redirects={redirects}
       />
       <DeleteApplicationDialog
-        action={handleDeleteApplication}
-        application={application}
+        action={actions.deleteApplication}
+        applicationName={application.name}
         className="self-start"
       >
         Delete application
