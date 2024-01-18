@@ -8,6 +8,8 @@ import {
 } from "@/constants/applications.constants";
 import { ROUTE_DEVELOPER } from "@/constants/route.constants";
 import { Application } from "@/db/schema";
+import { generateApplicationSecret } from "@/helpers/applications.helpers";
+import { generateSecureHash } from "@/helpers/crypto.helpers";
 import { getServerActionPathname } from "@/helpers/route.helpers";
 import {
   createApplicationRedirect,
@@ -16,6 +18,7 @@ import {
 import {
   deleteApplicationById,
   updateApplicationDescription,
+  updateApplicationHash,
   updateApplicationName,
 } from "@/repositories/applications.repository";
 import { revalidatePath } from "next/cache";
@@ -100,10 +103,19 @@ async function handleDeleteApplication(applicationId: Application["id"]) {
   redirect(ROUTE_DEVELOPER);
 }
 
+async function handleUpdateApplicationSecret(applicationId: Application["id"]) {
+  const secret = generateApplicationSecret();
+  const hash = await generateSecureHash(secret);
+  await updateApplicationHash({ applicationId, hash });
+
+  return secret;
+}
+
 export {
   handleEditApplicationName,
   handleEditApplicationDescription,
   handleCreateApplicationRedirect,
   handleDeleteApplicationRedirect,
   handleDeleteApplication,
+  handleUpdateApplicationSecret,
 };
