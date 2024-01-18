@@ -70,6 +70,19 @@ const updateApplicationName = async ({
     .where(eq(applications.id, applicationId));
 };
 
+const updateApplicationHash = async ({
+  applicationId,
+  hash,
+}: {
+  applicationId: Application["id"];
+  hash: Application["hash"];
+}) => {
+  await db
+    .update(applications)
+    .set({ hash })
+    .where(eq(applications.id, applicationId));
+};
+
 const deleteApplicationById = async ({
   applicationId,
 }: {
@@ -84,5 +97,6 @@ export {
   getApplicationsByUserId,
   updateApplicationDescription,
   updateApplicationName,
+  updateApplicationHash,
   deleteApplicationById,
 };
