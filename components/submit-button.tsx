@@ -1,13 +1,19 @@
 "use client";
 import { ComponentProps } from "react";
-import { useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { LoadingSpinner } from "./ui/loading-spinner";
+import { useFormSubmit } from "@/hooks/use-form-submit.hook";
 
-type SubmitButtonProps = ComponentProps<typeof Button>;
+type SubmitButtonProps = ComponentProps<typeof Button> & {
+  onSubmitted?: () => void;
+};
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ children, ...props }) => {
-  const { pending } = useFormStatus();
+const SubmitButton: React.FC<SubmitButtonProps> = ({
+  children,
+  onSubmitted,
+  ...props
+}) => {
+  const { pending } = useFormSubmit(onSubmitted);
 
   return (
     <Button type="submit" aria-disabled={pending} {...props}>
