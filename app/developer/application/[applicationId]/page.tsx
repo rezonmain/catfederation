@@ -9,13 +9,11 @@ import { handleDeleteApplicationRedirect } from "./actions";
 import { ClipboardButton } from "@/components/clipboard-button";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
 import { DeleteApplicationDialog } from "@/components/delete-application-dialog";
-import {
-  generateExampleAuthorizationUrl,
-  getApplicationPageActions,
-} from "@/helpers/applications.helpers";
+import { getApplicationPageActions } from "@/helpers/applications.helpers";
 import { ApplicationResetField } from "@/components/application-details-fields/application-secret-field";
 import { empty } from "@/helpers/utils.helpers";
 import { ApplicationExampleUrlField } from "@/components/application-details-fields/application-example-url-field";
+import { getAuthorizationUrl } from "@/helpers/oauth2.helpers";
 
 export default async function ApplicationPage({
   params,
@@ -64,7 +62,7 @@ export default async function ApplicationPage({
       <ApplicationResetField action={actions.updateSecret} />
       {empty(redirects) ? null : (
         <ApplicationExampleUrlField
-          url={generateExampleAuthorizationUrl(application.id, redirects)}
+          url={getAuthorizationUrl(application.id, redirects)}
         />
       )}
       <DeleteApplicationDialog
