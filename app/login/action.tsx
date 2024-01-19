@@ -1,21 +1,14 @@
 "use server";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { generateCred, verify } from "@/helpers/crypto.helpers";
 import { empty } from "@/helpers/utils.helpers";
 import { getUsersByCred } from "@/repositories/user.repository";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
 import { ROUTE_USER } from "@/constants/route.constants";
-
-const loginSchema = z.object({
-  email: z.string().email({ message: "Please provide a valid email" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
-});
+import { LOGIN_SCHEMA } from "@/constants/login.constants";
 
 async function handleLogin(formData: FormData) {
-  const fields = loginSchema.safeParse({
+  const fields = LOGIN_SCHEMA.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });
