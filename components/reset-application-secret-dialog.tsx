@@ -45,8 +45,10 @@ const ResetApplicationSecretDialog: React.FC<
               Cancel
             </Button>
           </DialogClose>
-          <form action={action} onSubmit={() => setOpen(false)}>
-            <SubmitButton>Reset</SubmitButton>
+          <form action={action}>
+            <SubmitButton onSubmitted={() => setOpen(false)}>
+              Reset
+            </SubmitButton>
           </form>
         </DialogFooter>
       </DialogContent>
