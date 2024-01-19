@@ -1,13 +1,22 @@
 import { z } from "zod";
 
-const OAUTH2_SUPPORTED_RESPONSE_TYPES = ["code"] as const;
+enum OAUTH2_SUPPORTED_RESPONSE_TYPES {
+  CODE = "code",
+}
+enum OAUTH2_SUPPORTED_SCOPES {
+  IDENTIFY = "identify",
+}
 
 const OAUTH2_AUTHORIZE_SCHEMA = z.object({
-  responseType: z.enum(OAUTH2_SUPPORTED_RESPONSE_TYPES),
+  responseType: z.nativeEnum(OAUTH2_SUPPORTED_RESPONSE_TYPES),
   applicationId: z.string(),
   redirectUri: z.string().url(),
-  scope: z.string().optional().nullable(),
+  scope: z.nativeEnum(OAUTH2_SUPPORTED_SCOPES),
   state: z.string().optional().nullable(),
 });
 
-export { OAUTH2_AUTHORIZE_SCHEMA, OAUTH2_SUPPORTED_RESPONSE_TYPES };
+export {
+  OAUTH2_SUPPORTED_RESPONSE_TYPES,
+  OAUTH2_SUPPORTED_SCOPES,
+  OAUTH2_AUTHORIZE_SCHEMA,
+};
