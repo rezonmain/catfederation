@@ -11,7 +11,7 @@ const ApplicationExampleUrlField: React.FC<ApplicationExampleUrlFieldProps> = ({
     <summary className="uppercase tracking-wider">
       Example authorization URL
     </summary>
-    <label className="flex cursor-pointer flex-row items-center justify-between rounded-lg border p-4">
+    <label className="flex cursor-pointer flex-row items-center justify-between rounded-lg border px-4 py-2">
       <code className="text-sm">{url}</code>
       <ClipboardButton text={url} toastMessage="URL copied to clipboard!" />
     </label>
