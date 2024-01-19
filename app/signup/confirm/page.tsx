@@ -21,7 +21,7 @@ export default function SignupConfirmPage({
   searchParams: SignupConfirmSearchParams;
 }) {
   return (
-    <main className="flex flex-col min-h-screen items-center justify-center max-w-sm mx-auto">
+    <main className="mx-auto flex min-h-screen max-w-sm flex-col items-center justify-center">
       <SignupConfirmForm
         email={searchParams.e}
         challengeToken={searchParams.ct}

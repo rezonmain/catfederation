@@ -7,7 +7,7 @@ const Link: React.FC<LinkProps> = ({ children, ...props }) => {
   return (
     <NextLink
       {...props}
-      className="underline underline-offset-4 font-medium hover:no-underline"
+      className="font-medium underline underline-offset-4 hover:no-underline"
     >
       {children}
     </NextLink>

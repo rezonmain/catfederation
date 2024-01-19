@@ -35,12 +35,12 @@ const encrypt = (s: string, secret = CRYPTO_SECRET) => {
 
 const decrypt = (
   { iv, content }: { iv: string; content: string },
-  secret = CRYPTO_ALGORITHM
+  secret = CRYPTO_ALGORITHM,
 ) => {
   const decipher = crypto.createDecipheriv(
     CRYPTO_ALGORITHM,
     secret,
-    Buffer.from(iv, "hex")
+    Buffer.from(iv, "hex"),
   );
 
   const plain = Buffer.concat([

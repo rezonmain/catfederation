@@ -48,7 +48,7 @@ const generateSession = (userId: User["id"]): Session => {
       expiresIn: SESSION_JWT_EXPIRES_IN,
       issuer: SESSION_JWT_ISSUER,
       algorithm: SESSION_JWT_ALGORITHM,
-    }
+    },
   );
 
   return {

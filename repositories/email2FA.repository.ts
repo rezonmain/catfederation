@@ -27,8 +27,8 @@ const getEmail2FAsExpiresAt = async ({
     .where(
       and(
         eq(email2FAs.cred, cred),
-        eq(email2FAs.challengeToken, challengeToken)
-      )
+        eq(email2FAs.challengeToken, challengeToken),
+      ),
     );
 };
 

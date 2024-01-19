@@ -26,7 +26,7 @@ const ApplicationResetField: React.FC<ApplicationResetFieldProps> = ({
             <p className="text-small text-muted-foreground">
               Save it somewhere safe, we will not show it again!
             </p>
-            <label className="flex flex-row justify-between border items-center p-2 rounded-lg cursor-pointer">
+            <label className="flex cursor-pointer flex-row items-center justify-between rounded-lg border p-2">
               <code className="text-sm">{secret}</code>
               <ClipboardButton
                 text={secret}

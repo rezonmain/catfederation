@@ -5,7 +5,7 @@ import { LogoutButton } from "./logout-button";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="flex flex-row justify-between items-center px-12 py-3 border-b border-b-border">
+    <nav className="flex flex-row items-center justify-between border-b border-b-border px-12 py-3">
       <NextLink href={ROUTE_USER}>
         <h1 className="text-2xl font-bold uppercase tracking-widest">
           catfederation

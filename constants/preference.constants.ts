@@ -12,7 +12,7 @@ const PREFERENCES_SCHEMA = z.object({
     .string()
     .max(
       PREFERENCE_ALIAS_MAX_LENGTH,
-      "Alias must be at most 32 characters long"
+      "Alias must be at most 32 characters long",
     ),
 });
 

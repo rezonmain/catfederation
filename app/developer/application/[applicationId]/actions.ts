@@ -25,7 +25,7 @@ import { redirect } from "next/navigation";
 
 async function handleEditApplicationName(
   applicationId: Application["id"],
-  data: FormData
+  data: FormData,
 ) {
   const fields = APPLICATION_NAME_SCHEMA.safeParse({
     name: data.get("name"),
@@ -43,7 +43,7 @@ async function handleEditApplicationName(
 
 async function handleEditApplicationDescription(
   applicationId: Application["id"],
-  data: FormData
+  data: FormData,
 ) {
   const fields = APPLICATION_DESCRIPTION_SCHEMA.safeParse({
     description: data.get("description"),
@@ -64,7 +64,7 @@ async function handleEditApplicationDescription(
 
 async function handleCreateApplicationRedirect(
   applicationId: Application["id"],
-  data: FormData
+  data: FormData,
 ) {
   const fields = APPLICATION_REDIRECTS_SCHEMA.safeParse({
     redirectUri: data.get("redirectUri"),

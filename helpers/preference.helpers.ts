@@ -12,7 +12,7 @@ const getUserPreferenceCookieValue = (userPreferences: UserPreferences) => {
 };
 
 const parseUserPreferenceCookieValue = (
-  cookieValue: string
+  cookieValue: string,
 ): UserPreferences => {
   const values = cookieValue.split("|");
   return {

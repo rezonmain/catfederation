@@ -28,7 +28,7 @@ type UserPreferenceFormProps = {
 
 const handleUserPreferencesFormSubmit = async (
   data: UserPreferences,
-  action: UserPreferenceFormProps["action"]
+  action: UserPreferenceFormProps["action"],
 ) => {
   const formData = new FormData();
   formData.append("alias", data.alias);
@@ -50,14 +50,14 @@ const UserPreferenceForm: React.FC<UserPreferenceFormProps> = ({
       await handleUserPreferencesFormSubmit(data, action);
       toast.success("Preferences saved!");
     },
-    [action]
+    [action],
   );
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-4 items-start"
+        className="flex w-full flex-col items-start gap-4"
       >
         <h1 className="text-lg font-medium">User preferences</h1>
         <div className="flex flex-col gap-4">
@@ -65,7 +65,7 @@ const UserPreferenceForm: React.FC<UserPreferenceFormProps> = ({
             control={form.control}
             name="alias"
             render={({ field }) => (
-              <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
+              <label className="flex flex-row items-center justify-between gap-10 rounded-lg border p-4 text-base">
                 <div>
                   <p>Alias</p>
                   <FormDescription>
@@ -90,7 +90,7 @@ const UserPreferenceForm: React.FC<UserPreferenceFormProps> = ({
             control={form.control}
             name="isDeveloper"
             render={({ field }) => (
-              <label className="text-base flex flex-row items-center justify-between gap-16 rounded-lg border p-4 cursor-pointer">
+              <label className="flex cursor-pointer flex-row items-center justify-between gap-16 rounded-lg border p-4 text-base">
                 <div>
                   <p>I&apos;m a developer</p>
                   <FormDescription>Toggle developer mode.</FormDescription>

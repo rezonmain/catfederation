@@ -7,5 +7,5 @@ export const db = drizzle(
   new Client({
     url: DB_URI,
   }).connection(),
-  { schema }
+  { schema },
 );

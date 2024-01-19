@@ -12,8 +12,9 @@ import {
   handleEditApplicationName,
   handleUpdateApplicationSecret,
 } from "@/app/developer/application/[applicationId]/actions";
-import { type Application } from "@/db/schema";
+import { ApplicationRedirect, type Application } from "@/db/schema";
 import { type ServerAction } from "@/types/common.types";
+import { APP_DOMAIN } from "@/constants/app.constants";
 
 const generateApplicationId = () => {
   return init({
@@ -38,7 +39,7 @@ const getApplicationPageActions = (applicationId: Application["id"]) => {
     handleEditApplicationDescription,
     handleCreateApplicationRedirect,
     handleDeleteApplication,
-    handleUpdateApplicationSecret
+    handleUpdateApplicationSecret,
   );
 
   return {
@@ -52,8 +53,19 @@ const getApplicationPageActions = (applicationId: Application["id"]) => {
   };
 };
 
+const generateExampleAuthorizationUrl = (
+  applicationId: Application["id"],
+  redirects: ApplicationRedirect[],
+) => {
+  applicationId = encodeURIComponent(applicationId);
+  const redirectUri = encodeURIComponent(redirects[0].uri);
+  const responseType = encodeURIComponent("code");
+  return `${APP_DOMAIN}/oauth2/authorize?responseType=${responseType}&applicationId=${applicationId}&redirectUri=${redirectUri}`;
+};
+
 export {
   generateApplicationId,
   generateApplicationSecret,
   getApplicationPageActions,
+  generateExampleAuthorizationUrl,
 };

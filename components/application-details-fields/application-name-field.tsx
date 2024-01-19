@@ -14,7 +14,7 @@ const ApplicationNameField: React.FC<
 > = ({ action, name }) => {
   return (
     <form action={action}>
-      <label className="text-base flex flex-row items-center justify-between gap-10 rounded-lg border p-4">
+      <label className="flex flex-row items-center justify-between gap-10 rounded-lg border p-4 text-base">
         <p className="uppercase tracking-wider">Name</p>
         <Input
           name="name"

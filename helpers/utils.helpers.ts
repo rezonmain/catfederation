@@ -1,4 +1,6 @@
-const empty = (val: string | unknown[] | object | null | undefined) => {
+const empty = (
+  val: string | unknown[] | object | null | undefined,
+): val is null | undefined => {
   if (!val) return true;
   if (Array.isArray(val)) return val.length === 0;
   if (typeof val === "object") return Object.keys(val).length === 0;

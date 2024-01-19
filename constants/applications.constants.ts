@@ -11,7 +11,7 @@ const APPLICATION_NAME_SCHEMA = z.object({
     .string()
     .max(
       APPLICATION_NAME_LENGTH,
-      "Application name cannot be longer than 64 characters"
+      "Application name cannot be longer than 64 characters",
     ),
 });
 const APPLICATION_DESCRIPTION_SCHEMA = z.object({
@@ -19,7 +19,7 @@ const APPLICATION_DESCRIPTION_SCHEMA = z.object({
     .string()
     .max(
       APPLICATION_DESCRIPTION_LENGTH,
-      "Application description cannot be longer than 400 characters"
+      "Application description cannot be longer than 400 characters",
     ),
 });
 const APPLICATION_REDIRECTS_SCHEMA = z.object({

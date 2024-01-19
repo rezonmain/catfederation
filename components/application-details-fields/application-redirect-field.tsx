@@ -18,7 +18,7 @@ const ApplicationRedirectField: React.FC<ApplicationRedirectProps> = ({
   applicationName = "",
 }) => {
   return (
-    <div className="rounded-lg border p-4 flex flex-col gap-4 items-start">
+    <div className="flex flex-col items-start gap-4 rounded-lg border p-4">
       <p className="uppercase tracking-wider">Redirects</p>
       {empty(redirects) ? (
         <p className="text-muted-foreground">
@@ -28,7 +28,7 @@ const ApplicationRedirectField: React.FC<ApplicationRedirectProps> = ({
         <ol>
           {redirects.map((redirect) => (
             <li key={redirect.id}>
-              <div className="flex flex-row gap-4 items-center">
+              <div className="flex flex-row items-center gap-4">
                 <span className="font-mono">{redirect.uri}</span>
                 <DeleteRedirectDialog redirect={redirect} action={deleteAction}>
                   Delete

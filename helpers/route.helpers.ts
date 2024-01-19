@@ -23,12 +23,12 @@ const returnWithSearchParams = <
     | string[][]
     | Record<string, string>
     | URLSearchParams
-    | undefined
+    | undefined,
 >(
-  params: T
+  params: T,
 ) => {
   const redirectUrl = `${getServerActionPathname()}?${new URLSearchParams(
-    params
+    params,
   ).toString()}`;
   redirect(redirectUrl);
 };
@@ -37,14 +37,14 @@ const returnWithSearchParams = <
 type ExtractRouteParams<T> = string extends T
   ? Record<string, string>
   : T extends `${infer _Start}:${infer Param}/${infer Rest}`
-  ? { [k in Param | keyof ExtractRouteParams<Rest>]: string }
-  : T extends `${infer _Start}:${infer Param}`
-  ? { [k in Param]: string }
-  : object;
+    ? { [k in Param | keyof ExtractRouteParams<Rest>]: string }
+    : T extends `${infer _Start}:${infer Param}`
+      ? { [k in Param]: string }
+      : object;
 
 const fillDynamicPath = <S extends string>(
   path: S,
-  args: ExtractRouteParams<S>
+  args: ExtractRouteParams<S>,
 ) => {
   const parts = path.split("/");
   parts.forEach((p, i) => {

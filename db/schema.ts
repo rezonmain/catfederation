@@ -26,7 +26,7 @@ export const users = mysqlTable(
       .$defaultFn(generateUserId)
       .primaryKey(),
     createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH }).$defaultFn(
-      ISONow
+      ISONow,
     ),
     updatedAt: varchar("updated_at", { length: TIME_FIELDS_LENGTH }),
     cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
@@ -36,7 +36,7 @@ export const users = mysqlTable(
     return {
       credIdx: uniqueIndex("cred_idx").on(table.cred),
     };
-  }
+  },
 );
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -80,7 +80,7 @@ export const applications = mysqlTable(
     return {
       userIdx: index("user_idx").on(table.userId), // Remove when planet scale supports FK constraints
     };
-  }
+  },
 );
 export type Application = typeof applications.$inferSelect;
 export type NewApplication = typeof applications.$inferInsert;
@@ -103,7 +103,7 @@ export const applicationRedirects = mysqlTable(
     return {
       applicationIdx: index("application_idx").on(table.applicationId), // Remove when planet scale supports FK constraints
     };
-  }
+  },
 );
 export type ApplicationRedirect = typeof applicationRedirects.$inferSelect;
 export type NewApplicationRedirect = typeof applicationRedirects.$inferInsert;
