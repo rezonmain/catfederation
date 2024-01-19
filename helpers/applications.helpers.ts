@@ -1,8 +1,8 @@
+import { init } from "@paralleldrive/cuid2";
 import {
   APPLICATION_ID_LENGTH,
   APPLICATION_SECRET_LENGTH,
 } from "@/constants/applications.constants";
-import { init } from "@paralleldrive/cuid2";
 import { getRandomBytes } from "./crypto.helpers";
 import { getBoundedActions } from "./route.helpers";
 import {
@@ -13,6 +13,7 @@ import {
   handleUpdateApplicationSecret,
 } from "@/app/developer/application/[applicationId]/actions";
 import { type Application } from "@/db/schema";
+import { type ServerAction } from "@/types/common.types";
 
 const generateApplicationId = () => {
   return init({
@@ -21,7 +22,7 @@ const generateApplicationId = () => {
 };
 
 const generateApplicationSecret = () => {
-  return getRandomBytes(APPLICATION_SECRET_LENGTH);
+  return getRandomBytes(APPLICATION_SECRET_LENGTH, "base64");
 };
 
 const getApplicationPageActions = (applicationId: Application["id"]) => {
@@ -45,7 +46,9 @@ const getApplicationPageActions = (applicationId: Application["id"]) => {
     editDescription,
     createRedirect,
     deleteApplication,
-    updateSecret,
+    updateSecret: updateSecret as ServerAction<
+      ReturnType<typeof handleUpdateApplicationSecret>
+    >,
   };
 };
 
