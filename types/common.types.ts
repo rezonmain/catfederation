@@ -1,3 +1,3 @@
-type ServerAction = (...args: any) => Promise<unknown>;
+type ServerAction<T = unknown> = (...args: any) => Promise<T>;
 
 export { type ServerAction };
