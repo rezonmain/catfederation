@@ -1,8 +1,8 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Application } from "@/db/schema";
 import { getRedirectUriPlaceholder } from "@/helpers/ui/application-details-fields.helpers";
-import { delayCall, empty } from "@/helpers/utils.helpers";
+import { empty } from "@/helpers/utils.helpers";
 import { ServerAction } from "@/types/common.types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,11 +31,6 @@ const CreateRedirectDialog: React.FC<CreateRedirectDialogProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const onSubmit = useCallback(
-    () => delayCall(() => setOpen(false), 750),
-    [setOpen]
-  );
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -50,11 +45,7 @@ const CreateRedirectDialog: React.FC<CreateRedirectDialogProps> = ({
             Add a redirect URI to your application.
           </DialogDescription>
         </DialogHeader>
-        <form
-          action={action}
-          onSubmit={onSubmit}
-          className="flex flex-col gap-4"
-        >
+        <form action={action} className="flex flex-col gap-4">
           <Input
             name="redirectUri"
             type="url"
@@ -72,7 +63,9 @@ const CreateRedirectDialog: React.FC<CreateRedirectDialogProps> = ({
                 Cancel
               </Button>
             </DialogClose>
-            <SubmitButton variant="outline">Add redirect</SubmitButton>
+            <SubmitButton variant="outline" onSubmitted={() => setOpen(false)}>
+              Add redirect
+            </SubmitButton>
           </DialogFooter>
         </form>
       </DialogContent>
