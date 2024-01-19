@@ -10,6 +10,7 @@ import { ClipboardButton } from "@/components/clipboard-button";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
 import { DeleteApplicationDialog } from "@/components/delete-application-dialog";
 import { getApplicationPageActions } from "@/helpers/applications.helpers";
+import { ApplicationResetField } from "@/components/application-details-fields/application-secret-field";
 
 export default async function ApplicationPage({
   params,
@@ -55,6 +56,7 @@ export default async function ApplicationPage({
         applicationName={application.name}
         redirects={redirects}
       />
+      <ApplicationResetField action={actions.updateSecret} />
       <DeleteApplicationDialog
         action={actions.deleteApplication}
         applicationName={application.name}
