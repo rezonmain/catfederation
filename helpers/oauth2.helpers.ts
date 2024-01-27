@@ -1,4 +1,3 @@
-import { LoginPageSearchParams } from "@/app/login/page";
 import { APP_DOMAIN } from "@/constants/app.constants";
 import {
   OAUTH2_SUPPORTED_RESPONSE_TYPES,
@@ -6,7 +5,10 @@ import {
 } from "@/constants/oauth2.constants";
 import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { Application, ApplicationRedirect } from "@/db/schema";
-import { OAuth2AuthorizeParams } from "@/types/oath2.type";
+import {
+  OAuth2AuthorizeParams,
+  OAuth2RedirectSearchParams,
+} from "@/types/oath2.type";
 
 const getAuthorizationUrl = (
   applicationId: Application["id"],
@@ -32,7 +34,7 @@ const encodeOAuth2LoginRedirectParams = (
 };
 
 const getOAuth2LoginRedirectURL = (params: OAuth2AuthorizeParams) => {
-  const searchParams: LoginPageSearchParams = {
+  const searchParams: OAuth2RedirectSearchParams = {
     applicationId: params.applicationId,
     redirectParams: encodeOAuth2LoginRedirectParams(params),
   };

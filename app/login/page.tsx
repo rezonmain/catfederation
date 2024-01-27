@@ -6,16 +6,14 @@ import { ROUTE_SIGNUP } from "@/constants/route.constants";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/link";
 import { params } from "@/helpers/route.helpers";
+import { OAuth2RedirectSearchParams } from "@/types/oath2.type";
 
 export const metadata: Metadata = {
   title: "catfederation | login",
   description: "log in into catfederation",
 };
 
-export type LoginPageSearchParams = {
-  applicationId: string;
-  redirectParams: string;
-};
+type LoginPageSearchParams = OAuth2RedirectSearchParams;
 
 export default function LoginPage({
   searchParams,
