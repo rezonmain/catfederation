@@ -70,9 +70,15 @@ const getBoundedActions = (
   return actions.map((action) => action.bind(null, parameterToBind));
 };
 
+const redirectToHyperspace = (callback: string) => {
+  const searchParams = new URLSearchParams({ callback });
+  redirect(`/hyperspace?${searchParams.toString()}`);
+};
+
 export {
   getServerActionPathname,
   returnWithSearchParams,
   fillDynamicPath,
   getBoundedActions,
+  redirectToHyperspace,
 };
