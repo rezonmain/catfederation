@@ -40,6 +40,7 @@ export default function LoginPage({
           required
         />
         <SubmitButton>Log in</SubmitButton>
+        <hr />
         <small>
           Don&apos;t have a cat federation account?{" "}
           <Link href={`${ROUTE_SIGNUP}?${params(searchParams)}`}>
