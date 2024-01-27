@@ -4,6 +4,7 @@ import { ROUTE_LOGIN } from "@/constants/route.constants";
 import { handleSignup } from "./action";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/link";
+import { params } from "@/helpers/route.helpers";
 
 export const metadata: Metadata = {
   title: "catfederation | signup",
@@ -21,12 +22,20 @@ export default function SignupPage({
 }) {
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col items-center justify-center">
-      {searchParams.es ? <SignupEmailConfirmNotice /> : <SignupForm />}
+      {searchParams.es ? (
+        <SignupEmailConfirmNotice />
+      ) : (
+        <SignupForm searchParams={searchParams} />
+      )}
     </main>
   );
 }
 
-const SignupForm = () => {
+const SignupForm = ({
+  searchParams,
+}: {
+  searchParams: SignupPageSearchParams;
+}) => {
   return (
     <form action={handleSignup} className="flex flex-col gap-4">
       <h1>Sign up to catfederation</h1>
@@ -45,7 +54,9 @@ const SignupForm = () => {
       <hr />
       <small>
         Already have a cat federation account?{" "}
-        <Link href={ROUTE_LOGIN}>Click here to log in</Link>{" "}
+        <Link href={`${ROUTE_LOGIN}?${params(searchParams)}`}>
+          Click here to log in
+        </Link>
       </small>
     </form>
   );

@@ -5,13 +5,23 @@ import { PASSWORD_MIN_LENGTH } from "@/constants/password.constants";
 import { ROUTE_SIGNUP } from "@/constants/route.constants";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/link";
+import { params } from "@/helpers/route.helpers";
 
 export const metadata: Metadata = {
   title: "catfederation | login",
   description: "log in into catfederation",
 };
 
-export default function LoginPage() {
+export type LoginPageSearchParams = {
+  applicationId: string;
+  redirectParams: string;
+};
+
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: LoginPageSearchParams;
+}) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
       <form action={handleLogin} className="flex flex-col gap-4">
@@ -34,7 +44,9 @@ export default function LoginPage() {
         <SubmitButton>Log in</SubmitButton>
         <small>
           Don&apos;t have a cat federation account?{" "}
-          <Link href={ROUTE_SIGNUP}>Click here to sign up</Link>
+          <Link href={`${ROUTE_SIGNUP}?${params(searchParams)}`}>
+            Click here to sign up
+          </Link>
         </small>
       </form>
     </main>
