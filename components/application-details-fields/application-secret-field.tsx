@@ -4,7 +4,7 @@ import { handleUpdateApplicationSecret } from "@/app/developer/application/[appl
 import { type ServerAction } from "@/types/common.types";
 import { ResetApplicationSecretDialog } from "@/components/reset-application-secret-dialog";
 import { empty } from "@/helpers/utils.helpers";
-import { ClipboardButton } from "../clipboard-button";
+import { ClipboardButton } from "@/components/clipboard-button";
 
 type ActionReturnType = ReturnType<typeof handleUpdateApplicationSecret>;
 
