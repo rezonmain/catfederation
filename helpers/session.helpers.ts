@@ -118,19 +118,9 @@ const getSessionCookies = () => {
   return { jwt, fgp };
 };
 
-const getSessionCookiesFromRequest = (req: NextRequest) => {
-  const jwt = req.cookies.get(SESSION_JWT_COOKIE_NAME);
-  const fgp = req.cookies.get(SESSION_FGP_COOKIE_NAME);
-  if (nil(jwt) || nil(fgp)) {
-    throw new Error("No session cookies");
-  }
-  return { jwt, fgp };
-};
-
-const validSession = (req: NextRequest) => {
+const validSession = () => {
   try {
-    const { jwt, fgp } = getSessionCookiesFromRequest(req);
-    console.log({ jwt, fgp });
+    const { jwt, fgp } = getSessionCookies();
     const userId = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
     if (nil(userId)) {
       throw new Error("Invalid token");
