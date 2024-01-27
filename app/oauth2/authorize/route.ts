@@ -1,7 +1,10 @@
 import { type NextRequest } from "next/server";
+import { redirect } from "next/navigation";
 import { OAUTH2_AUTHORIZE_SCHEMA } from "@/constants/oauth2.constants";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
 import { empty } from "@/helpers/utils.helpers";
+import { validSession } from "@/helpers/session.helpers";
+import { getOAuth2LoginRedirectURL } from "@/helpers/oauth2.helpers";
 
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams;
@@ -20,6 +23,9 @@ export async function GET(req: NextRequest) {
       }),
       { status: 400 },
     );
+  }
+  if (!validSession()) {
+    redirect(getOAuth2LoginRedirectURL(params.data));
   }
 
   const redirects = await getApplicationRedirects({
