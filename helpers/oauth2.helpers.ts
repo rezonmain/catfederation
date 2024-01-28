@@ -4,8 +4,8 @@ import {
   OAUTH2_SUPPORTED_SCOPES,
 } from "@/constants/oauth2.constants";
 import {
+  ROUTE_API_OAUTH2_AUTHORIZE,
   ROUTE_LOGIN,
-  ROUTE_OAUTH2_AUTHORIZE,
 } from "@/constants/route.constants";
 import { Application, ApplicationRedirect } from "@/db/schema";
 import { OAuth2AuthorizeParams } from "@/types/oath2.type";
@@ -19,12 +19,12 @@ const getAuthorizationUrl = (
   const redirectUri = encodeURIComponent(redirects[0].uri);
   const responseType = encodeURIComponent(OAUTH2_SUPPORTED_RESPONSE_TYPES.CODE);
   const scope = encodeURIComponent(OAUTH2_SUPPORTED_SCOPES.IDENTIFY);
-  return `${APP_DOMAIN}/oauth2/authorize?responseType=${responseType}&applicationId=${applicationId}&redirectUri=${redirectUri}&scope=${scope}`;
+  return `${APP_DOMAIN}/api/oauth2/authorize?responseType=${responseType}&applicationId=${applicationId}&redirectUri=${redirectUri}&scope=${scope}`;
 };
 
 const getOAuth2LoginRedirectURL = (oAuth2Params: OAuth2AuthorizeParams) => {
   return pwq(ROUTE_LOGIN, {
-    redirectTo: pwq(ROUTE_OAUTH2_AUTHORIZE, oAuth2Params),
+    redirectTo: pwq(ROUTE_API_OAUTH2_AUTHORIZE, oAuth2Params),
   });
 };
 
