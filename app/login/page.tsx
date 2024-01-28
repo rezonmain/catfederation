@@ -8,6 +8,7 @@ import { Link } from "@/components/link";
 import { params } from "@/helpers/route.helpers";
 import { OAuth2RedirectSearchParams } from "@/types/oath2.type";
 import { empty } from "@/helpers/utils.helpers";
+import { HiddenFields } from "@/components/hidden-fields";
 
 export const metadata: Metadata = {
   title: "catfederation | login",
@@ -41,18 +42,7 @@ export default function LoginPage({
           required
         />
         {empty(searchParams.applicationId) ? null : (
-          <input
-            type="hidden"
-            name="applicationId"
-            value={searchParams.applicationId}
-          />
-        )}
-        {empty(searchParams.redirectParams) ? null : (
-          <input
-            type="hidden"
-            name="redirectParams"
-            value={searchParams.redirectParams}
-          />
+          <HiddenFields fields={searchParams} />
         )}
         <SubmitButton>Log in</SubmitButton>
         <hr />
