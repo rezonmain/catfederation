@@ -6,14 +6,12 @@ import { getUsersByCred } from "@/repositories/user.repository";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
 import { ROUTE_USER } from "@/constants/route.constants";
 import { LOGIN_SCHEMA } from "@/constants/login.constants";
-import { getLoginOAuth2RedirectURL } from "@/helpers/oauth2.helpers";
 
 async function handleLogin(formData: FormData) {
   const fields = LOGIN_SCHEMA.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
-    applicationId: formData.get("applicationId"),
-    redirectParams: formData.get("redirectParams"),
+    redirectTo: formData.get("redirectTo"),
   });
 
   if (!fields.success) {
@@ -40,17 +38,11 @@ async function handleLogin(formData: FormData) {
   const { id } = users[0];
   setNewSessionCookies({ userId: id });
 
-  // No OAuth 2 redirect
-  if (empty(fields.data.applicationId)) {
+  if (empty(fields.data.redirectTo)) {
     redirect(ROUTE_USER);
   }
 
-  redirect(
-    getLoginOAuth2RedirectURL({
-      applicationId: fields.data.applicationId!,
-      redirectParams: fields.data.redirectParams!,
-    }),
-  );
+  redirect(fields.data.redirectTo);
 }
 
 export { handleLogin };
