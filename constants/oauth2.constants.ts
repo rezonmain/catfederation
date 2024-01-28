@@ -12,7 +12,6 @@ const OAUTH2_AUTHORIZE_SCHEMA = z.object({
   applicationId: z.string(),
   redirectUri: z.string().url(),
   scope: z.nativeEnum(OAUTH2_SUPPORTED_SCOPES),
-  state: z.string().optional().nullable(),
 });
 
 export {
