@@ -6,6 +6,7 @@ const ROUTE_USER = "/user";
 const ROUTE_DEVELOPER = "/developer";
 const ROUTE_DEVELOPER_APPLICATION = "/developer/application/:applicationId";
 const ROUTE_HYPERSPACE = "/hyperspace";
+const ROUTE_OAUTH2_AUTHORIZE = "/oauth2/authorize";
 
 export {
   ROUTE_HOME,
@@ -16,4 +17,5 @@ export {
   ROUTE_DEVELOPER,
   ROUTE_DEVELOPER_APPLICATION,
   ROUTE_HYPERSPACE,
+  ROUTE_OAUTH2_AUTHORIZE,
 };
