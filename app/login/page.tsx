@@ -6,16 +6,16 @@ import { ROUTE_SIGNUP } from "@/constants/route.constants";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/link";
 import { params } from "@/helpers/route.helpers";
-import { OAuth2RedirectSearchParams } from "@/types/oath2.type";
 import { empty } from "@/helpers/utils.helpers";
-import { HiddenFields } from "@/components/hidden-fields";
 
 export const metadata: Metadata = {
   title: "catfederation | login",
   description: "log in into catfederation",
 };
 
-type LoginPageSearchParams = OAuth2RedirectSearchParams;
+type LoginPageSearchParams = {
+  redirectTo?: string;
+};
 
 export default function LoginPage({
   searchParams,
@@ -41,8 +41,12 @@ export default function LoginPage({
           minLength={PASSWORD_MIN_LENGTH}
           required
         />
-        {empty(searchParams.applicationId) ? null : (
-          <HiddenFields fields={searchParams} />
+        {empty(searchParams.redirectTo) ? null : (
+          <input
+            type="hidden"
+            name="redirectTo"
+            value={searchParams.redirectTo}
+          />
         )}
         <SubmitButton>Log in</SubmitButton>
         <hr />
