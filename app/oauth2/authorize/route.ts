@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     applicationId: query.get("applicationId"),
     redirectUri: query.get("redirectUri"),
     scope: query.get("scope"),
-    state: query.get("state"),
   });
 
   if (!params.success) {
