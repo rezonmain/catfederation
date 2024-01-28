@@ -3,12 +3,16 @@ import {
   OAUTH2_SUPPORTED_RESPONSE_TYPES,
   OAUTH2_SUPPORTED_SCOPES,
 } from "@/constants/oauth2.constants";
-import { ROUTE_LOGIN } from "@/constants/route.constants";
+import {
+  ROUTE_LOGIN,
+  ROUTE_OAUTH2_AUTHORIZE,
+} from "@/constants/route.constants";
 import { Application, ApplicationRedirect } from "@/db/schema";
 import {
   OAuth2AuthorizeParams,
   OAuth2RedirectSearchParams,
 } from "@/types/oath2.type";
+import { params } from "./route.helpers";
 
 const getAuthorizationUrl = (
   applicationId: Application["id"],
@@ -41,4 +45,14 @@ const getOAuth2LoginRedirectURL = (params: OAuth2AuthorizeParams) => {
   return `${ROUTE_LOGIN}?applicationId=${searchParams.applicationId}&redirectParams=${searchParams.redirectParams}`;
 };
 
-export { getAuthorizationUrl, getOAuth2LoginRedirectURL };
+const getLoginOAuth2RedirectURL = (
+  searchParams: OAuth2RedirectSearchParams,
+) => {
+  return `${ROUTE_OAUTH2_AUTHORIZE}?${params(searchParams.redirectParams)}`;
+};
+
+export {
+  getAuthorizationUrl,
+  getOAuth2LoginRedirectURL,
+  getLoginOAuth2RedirectURL,
+};

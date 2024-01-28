@@ -75,8 +75,8 @@ const redirectToHyperspace = (callback: string) => {
   redirect(`/hyperspace?${searchParams.toString()}`);
 };
 
-const params = <T extends Record<string, string>>(obj: T) => {
-  return new URLSearchParams(obj).toString();
+const params = <T extends Record<string, string> | string>(init: T) => {
+  return new URLSearchParams(init).toString();
 };
 
 export {
