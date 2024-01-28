@@ -11,6 +11,8 @@ async function handleLogin(formData: FormData) {
   const fields = LOGIN_SCHEMA.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
+    applicationId: formData.get("applicationId"),
+    redirectParams: formData.get("redirectParams"),
   });
 
   if (!fields.success) {
