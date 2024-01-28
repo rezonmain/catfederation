@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { nil } from "@/helpers/utils.helpers";
-import { ServerAction } from "@/types/common.types";
+import { AppRoute, ServerAction } from "@/types/common.types";
 
 const getServerActionPathname = () => {
   const heads = headers();
@@ -56,7 +56,6 @@ const fillDynamicPath = <S extends string>(
   });
   return parts.join("/");
 };
-
 /**
  * Bind a parameter to multiple server action functions, [Nextjs docs](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#passing-additional-arguments)
  * @param parameterToBind
@@ -79,6 +78,14 @@ const params = <T extends Record<string, string> | string>(init: T) => {
   return new URLSearchParams(init).toString();
 };
 
+/**
+ * Path With Query -
+ * Return a navigable path with query params
+ */
+const pwq = (path: AppRoute, query: Record<string, string>) => {
+  return `${path}?${params(query)}`;
+};
+
 export {
   getServerActionPathname,
   returnWithSearchParams,
@@ -86,4 +93,5 @@ export {
   getBoundedActions,
   redirectToHyperspace,
   params,
+  pwq,
 };
