@@ -5,6 +5,8 @@ import { getApplicationRedirects } from "@/repositories/applicationRedirects.rep
 import { empty } from "@/helpers/utils.helpers";
 import { validSession } from "@/helpers/session.helpers";
 import { getOAuth2LoginRedirectURL } from "@/helpers/oauth2.helpers";
+import { pwq } from "@/helpers/route.helpers";
+import { ROUTE_OAUTH2_AUTHORIZE } from "@/constants/route.constants";
 
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams;
@@ -48,5 +50,5 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  return new Response(redirectToUse.uri);
+  redirect(pwq(ROUTE_OAUTH2_AUTHORIZE, params.data));
 }
