@@ -4,16 +4,6 @@ import {
   APPLICATION_SECRET_LENGTH,
 } from "@/constants/applications.constants";
 import { getRandomBytes } from "./crypto.helpers";
-import { getBoundedActions } from "./route.helpers";
-import {
-  handleCreateApplicationRedirect,
-  handleDeleteApplication,
-  handleEditApplicationDescription,
-  handleEditApplicationName,
-  handleUpdateApplicationSecret,
-} from "@/app/developer/application/[applicationId]/actions";
-import { type Application } from "@/db/schema";
-import { type ServerAction } from "@/types/common.types";
 
 const generateApplicationId = () => {
   return init({
