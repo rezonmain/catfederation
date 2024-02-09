@@ -5,15 +5,51 @@ import {
 } from "@/components/application-details-fields";
 import { auth } from "@/helpers/session.helpers";
 import { getApplicationById } from "@/repositories/applications.repository";
-import { handleDeleteApplicationRedirect } from "./actions";
+import {
+  handleCreateApplicationRedirect,
+  handleDeleteApplication,
+  handleDeleteApplicationRedirect,
+  handleEditApplicationDescription,
+  handleEditApplicationName,
+  handleUpdateApplicationSecret,
+} from "./actions";
 import { ClipboardButton } from "@/components/clipboard-button";
 import { getApplicationRedirects } from "@/repositories/applicationRedirects.repository";
 import { DeleteApplicationDialog } from "@/components/delete-application-dialog";
-import { getApplicationPageActions } from "@/helpers/applications.helpers";
 import { ApplicationResetField } from "@/components/application-details-fields/application-secret-field";
 import { empty } from "@/helpers/utils.helpers";
 import { ApplicationExampleUrlField } from "@/components/application-details-fields/application-example-url-field";
 import { getAuthorizationUrl } from "@/helpers/oauth2.helpers";
+import { Application } from "@/db/schema";
+import { getBoundedActions } from "@/helpers/route.helpers";
+import { type ServerAction } from "@/types/common.types";
+
+const getApplicationPageActions = (applicationId: Application["id"]) => {
+  const [
+    editName,
+    editDescription,
+    createRedirect,
+    deleteApplication,
+    updateSecret,
+  ] = getBoundedActions(
+    applicationId,
+    handleEditApplicationName,
+    handleEditApplicationDescription,
+    handleCreateApplicationRedirect,
+    handleDeleteApplication,
+    handleUpdateApplicationSecret,
+  );
+
+  return {
+    editName,
+    editDescription,
+    createRedirect,
+    deleteApplication,
+    updateSecret: updateSecret as ServerAction<
+      ReturnType<typeof handleUpdateApplicationSecret>
+    >,
+  };
+};
 
 export default async function ApplicationPage({
   params,
