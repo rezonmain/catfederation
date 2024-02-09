@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 export type SignupPageSearchParams = {
   es: "true";
+  redirectTo?: string;
 };
 
 export default function SignupPage({
