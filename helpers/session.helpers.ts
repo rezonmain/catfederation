@@ -20,7 +20,10 @@ import { ROUTE_LOGIN } from "@/constants/route.constants";
 const generateSessionUserFingerprint = (): string =>
   crypto.randomBytes(25).toString("hex");
 
-const verifyJWT = ({ jwt: _jwt, fgp }: Session): string => {
+const verifyJWT = ({
+  jwt: _jwt,
+  fgp,
+}: Session): Pick<User, "id" | "username"> => {
   const hashedFingerprint = generateHash(fgp);
   const decoded = jwt.verify(_jwt, SESSION_JWT_SECRET, {
     issuer: SESSION_JWT_ISSUER,
@@ -32,7 +35,7 @@ const verifyJWT = ({ jwt: _jwt, fgp }: Session): string => {
   if (decoded.fgp !== hashedFingerprint) {
     throw new Error("JWT fingerprint doesn't match");
   }
-  return decoded.uid;
+  return { id: decoded.uid, username: decoded.unm };
 };
 
 const generateSession = (
@@ -142,11 +145,11 @@ const validSession = () => {
 const auth = () => {
   try {
     const { jwt, fgp } = getSessionCookies();
-    const userId = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
-    if (nil(userId)) {
+    const user = verifyJWT({ jwt: jwt.value, fgp: fgp.value });
+    if (nil(user.id)) {
       throw new Error("Invalid token");
     }
-    return { userId };
+    return user;
   } catch (error) {
     console.error(error);
     redirect(ROUTE_LOGIN);
