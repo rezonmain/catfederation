@@ -29,4 +29,11 @@ const getHashByCred = async ({ cred }: { cred: User["cred"] }) => {
   return rows[0]?.hash;
 };
 
-export { createUser, getUsersByCred, getHashByCred };
+const updateUserUsername = async ({
+  username,
+  id,
+}: Pick<User, "id" | "username">) => {
+  return await db.update(users).set({ username }).where(eq(users.id, id));
+};
+
+export { createUser, getUsersByCred, getHashByCred, updateUserUsername };

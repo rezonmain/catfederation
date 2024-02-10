@@ -10,7 +10,7 @@ import {
 } from "@/repositories/email2FA.repository";
 import { createUser } from "@/repositories/user.repository";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
-import { ROUTE_USER } from "@/constants/route.constants";
+import { ROUTE_SIGNUP_FINISH } from "@/constants/route.constants";
 
 const signupConfirmSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -56,7 +56,7 @@ async function handleSignupConfirm(formData: FormData) {
   deleteEmail2FAsByCred({ cred });
 
   setNewSessionCookies(user);
-  redirect(ROUTE_USER);
+  redirect(ROUTE_SIGNUP_FINISH);
 }
 
 export { handleSignupConfirm };
