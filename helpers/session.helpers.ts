@@ -35,13 +35,17 @@ const verifyJWT = ({ jwt: _jwt, fgp }: Session): string => {
   return decoded.uid;
 };
 
-const generateSession = (userId: User["id"]): Session => {
+const generateSession = (
+  userId: User["id"],
+  username: User["username"],
+): Session => {
   const fgp = generateSessionUserFingerprint();
   const hashedFgp = generateHash(fgp);
 
   const _jwt = jwt.sign(
     {
       uid: userId,
+      unm: username,
       fgp: hashedFgp,
     },
     SESSION_JWT_SECRET,
@@ -58,8 +62,12 @@ const generateSession = (userId: User["id"]): Session => {
   };
 };
 
-const generateNewSessionCookies = ({ userId }: { userId: User["id"] }) => {
-  const { jwt: jwtValue, fgp: fgpValue } = generateSession(userId);
+const generateNewSessionCookies = (user: Pick<User, "id" | "username">) => {
+  const { jwt: jwtValue, fgp: fgpValue } = generateSession(
+    user.id,
+    user.username,
+  );
+
   const jwt = {
     name: SESSION_JWT_COOKIE_NAME,
     value: jwtValue,
@@ -150,7 +158,7 @@ const deleteSessionCookies = () => {
   cookies().set(fgp.name, fgp.value, fgp.options);
 };
 
-const setNewSessionCookies = (params: { userId: User["id"] }) => {
+const setNewSessionCookies = (params: Pick<User, "id" | "username">) => {
   const { jwt, fgp } = generateNewSessionCookies(params);
   cookies().set(jwt.name, jwt.value, jwt.options);
   cookies().set(fgp.name, fgp.value, fgp.options);

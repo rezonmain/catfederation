@@ -6,11 +6,17 @@ import {
 } from "@/constants/applications.constants";
 import { CRYPTO_FIELDS_LENGTH } from "@/constants/crypto.constants";
 import { TIME_FIELDS_LENGTH } from "@/constants/time.constants";
-import { USERS_ID_LENGTH } from "@/constants/users.constants";
+import {
+  USERS_ID_LENGTH,
+  USERS_USERNAME_MAX_LENGTH,
+} from "@/constants/users.constants";
 import { generateApplicationId } from "@/helpers/applications.helpers";
 import { getEmail2FAExpirationISODate } from "@/helpers/email2FA.helpers";
 import { ISONow } from "@/helpers/time.helpers";
-import { generateUserId } from "@/helpers/users.helpers";
+import {
+  generatePlaceholderUsername,
+  generateUserId,
+} from "@/helpers/users.helpers";
 import {
   serial,
   varchar,
@@ -31,10 +37,16 @@ export const users = mysqlTable(
     updatedAt: varchar("updated_at", { length: TIME_FIELDS_LENGTH }),
     cred: varchar("cred", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
     hash: varchar("hash", { length: CRYPTO_FIELDS_LENGTH }).notNull(),
+    username: varchar("username", {
+      length: USERS_USERNAME_MAX_LENGTH,
+    })
+      .notNull()
+      .$defaultFn(generatePlaceholderUsername),
   },
   (table) => {
     return {
       credIdx: uniqueIndex("cred_idx").on(table.cred),
+      usernameIdx: uniqueIndex("username_idx").on(table.username),
     };
   },
 );

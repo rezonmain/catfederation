@@ -52,10 +52,10 @@ async function handleSignupConfirm(formData: FormData) {
 
   const hash = await generateSecureHash(fields.data.password);
 
-  const userId = await createUser({ cred, hash });
+  const user = await createUser({ cred, hash });
   deleteEmail2FAsByCred({ cred });
 
-  setNewSessionCookies({ userId });
+  setNewSessionCookies(user);
   redirect(ROUTE_USER);
 }
 

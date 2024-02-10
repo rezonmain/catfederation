@@ -27,16 +27,18 @@ async function handleLogin(formData: FormData) {
     // user not found
     throw new Error("Generic authentication error");
   }
-  const { hash } = users[0];
-  const hasValidCredentials = verify({ password: fields.data.password, hash });
+  const user = users[0];
+  const hasValidCredentials = verify({
+    password: fields.data.password,
+    hash: user.hash,
+  });
 
   if (!hasValidCredentials) {
     // invalid password
     throw new Error("Generic authentication error");
   }
 
-  const { id } = users[0];
-  setNewSessionCookies({ userId: id });
+  setNewSessionCookies(user);
 
   if (empty(fields.data.redirectTo)) {
     redirect(ROUTE_USER);

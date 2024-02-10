@@ -1,12 +1,19 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db/db";
 import { NewUser, User, users } from "@/db/schema";
-import { generateUserId } from "@/helpers/users.helpers";
+import {
+  generatePlaceholderUsername,
+  generateUserId,
+} from "@/helpers/users.helpers";
 
-const createUser = async ({ cred, hash }: NewUser): Promise<string> => {
+const createUser = async ({
+  cred,
+  hash,
+}: NewUser): Promise<Pick<User, "id" | "username">> => {
   const id = generateUserId();
-  await db.insert(users).values({ cred, hash, id });
-  return id;
+  const username = generatePlaceholderUsername();
+  await db.insert(users).values({ cred, hash, id, username });
+  return { id, username };
 };
 
 const getUsersByCred = async ({ cred }: { cred: User["cred"] }) => {
