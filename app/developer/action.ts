@@ -11,7 +11,7 @@ const registerNewApplicationSchema = z.object({
 });
 
 async function handleRegisterApplication(formData: FormData) {
-  const { userId } = auth();
+  const { id: userId } = auth();
 
   const fields = registerNewApplicationSchema.safeParse({
     name: formData.get("name"),

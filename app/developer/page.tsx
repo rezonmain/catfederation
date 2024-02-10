@@ -12,7 +12,7 @@ import { fillDynamicPath } from "@/helpers/route.helpers";
 import { handleRegisterApplication } from "./action";
 
 export default async function DeveloperPage() {
-  const { userId } = auth();
+  const { id: userId } = auth();
   const isDeveloper = developer();
   if (!isDeveloper) {
     redirect(ROUTE_USER);
