@@ -12,7 +12,7 @@ export default async function OAuth2AuthorizePage({
   const { applicationId, redirectUri } = searchParams;
   const application = await getApplicationById({ applicationId });
   return (
-    <div>
+    <main className="flex min-h-screen flex-col items-center justify-center">
       <small>The external application</small>
       <h1>{application.name}</h1>
       <small>Wants to access your catfederation account</small>
@@ -35,6 +35,6 @@ export default async function OAuth2AuthorizePage({
       <form>
         <button>Authorize</button>
       </form>
-    </div>
+    </main>
   );
 }
