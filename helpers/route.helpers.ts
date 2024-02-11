@@ -82,7 +82,7 @@ const params = <T extends Record<string, string> | string>(init: T) => {
  * Path With Query -
  * Return a navigable path with query params
  */
-const pwq = (path: AppRoute, query: Record<string, string>) => {
+const pwq = (path: AppRoute | string, query: Record<string, string>) => {
   return `${path}?${params(query)}`;
 };
 
