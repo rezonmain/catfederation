@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { empty } from "@/helpers/utils.helpers";
 import { FieldMessage } from "./field-message";
 import { SubmitButton } from "./submit-button";
@@ -15,7 +14,6 @@ import {
   USERS_USERNAME_MAX_LENGTH,
   USERS_USERNAME_MIN_LENGTH,
 } from "@/constants/users.constants";
-import { generateRandomUsername } from "@/helpers/users.helpers";
 
 type UsersUpdateUsernameFormProps = {
   userId: string;
