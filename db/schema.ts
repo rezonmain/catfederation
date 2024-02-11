@@ -4,6 +4,7 @@ import {
   APPLICATION_NAME_LENGTH,
   APPLICATION_REDIRECT_URL_LENGTH,
 } from "@/constants/applications.constants";
+import { CODES_CODE_LENGTH } from "@/constants/codes.constants";
 import { CRYPTO_FIELDS_LENGTH } from "@/constants/crypto.constants";
 import { TIME_FIELDS_LENGTH } from "@/constants/time.constants";
 import {
@@ -11,6 +12,7 @@ import {
   USERS_USERNAME_MAX_LENGTH,
 } from "@/constants/users.constants";
 import { generateApplicationId } from "@/helpers/applications.helpers";
+import { getCodeExpirationISODate } from "@/helpers/code.helpers";
 import { getEmail2FAExpirationISODate } from "@/helpers/email2FA.helpers";
 import { ISONow } from "@/helpers/time.helpers";
 import {
@@ -119,3 +121,30 @@ export const applicationRedirects = mysqlTable(
 );
 export type ApplicationRedirect = typeof applicationRedirects.$inferSelect;
 export type NewApplicationRedirect = typeof applicationRedirects.$inferInsert;
+
+export const codes = mysqlTable(
+  "codes",
+  {
+    id: serial("id").primaryKey(),
+    createdAt: varchar("created_at", { length: TIME_FIELDS_LENGTH })
+      .$defaultFn(ISONow)
+      .notNull(),
+    expiresAt: varchar("expires_at", { length: TIME_FIELDS_LENGTH })
+      .$defaultFn(getCodeExpirationISODate)
+      .notNull(),
+    code: varchar("code", { length: CODES_CODE_LENGTH }).notNull(),
+    redirectUri: varchar("redirect_uri", {
+      length: APPLICATION_REDIRECT_URL_LENGTH,
+    }).notNull(),
+    applicationId: varchar("application_id", { length: APPLICATION_ID_LENGTH })
+      // .references(() => applications.id, { onDelete: 'cascade' })
+      .notNull(),
+  },
+  (table) => {
+    return {
+      applicationIdx: index("application_idx").on(table.applicationId), // Remove when planet scale supports FK constraints
+    };
+  },
+);
+export type Code = typeof codes.$inferSelect;
+export type NewCode = typeof codes.$inferInsert;
