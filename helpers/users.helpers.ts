@@ -1,9 +1,13 @@
+import { init } from "@paralleldrive/cuid2";
+import { faker } from "@faker-js/faker";
 import {
   USERS_ID_LENGTH,
   USERS_PLACEHOLDER_USERNAME_KEY,
   USERS_PLACEHOLDER_USERNAME_LENGTH,
+  USERS_USERNAME_MAX_LENGTH,
+  USERS_USERNAME_MIN_LENGTH,
 } from "@/constants/users.constants";
-import { init } from "@paralleldrive/cuid2";
+import { truncate, upperFirst } from "@/helpers/utils.helpers";
 
 const generateUserId = () => {
   return init({
@@ -20,4 +24,20 @@ const isPlaceholderUsername = (username: string) => {
   return username.startsWith(USERS_PLACEHOLDER_USERNAME_KEY);
 };
 
-export { generateUserId, generatePlaceholderUsername, isPlaceholderUsername };
+const generateRandomUsername = () => {
+  const color = upperFirst(faker.color.human());
+  const adjective = upperFirst(faker.word.noun());
+  const animal = upperFirst(faker.animal.type());
+  const username = `${color}${adjective}${animal}`
+    .padStart(USERS_USERNAME_MIN_LENGTH, "_")
+    .replace(/\s/g, "");
+
+  return truncate(username, USERS_USERNAME_MAX_LENGTH);
+};
+
+export {
+  generateUserId,
+  generatePlaceholderUsername,
+  isPlaceholderUsername,
+  generateRandomUsername,
+};
