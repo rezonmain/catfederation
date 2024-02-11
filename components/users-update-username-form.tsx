@@ -6,7 +6,10 @@ import { Button } from "@/components/ui/button";
 import { empty } from "@/helpers/utils.helpers";
 import { FieldMessage } from "./field-message";
 import { SubmitButton } from "./submit-button";
-import { handleUpdateUsername } from "@/app/signup/finish/action";
+import {
+  handleGenerateRandomUsername,
+  handleUpdateUsername,
+} from "@/app/signup/finish/action";
 import {
   USERS_USERNAME_INPUT_PATTERN,
   USERS_USERNAME_MAX_LENGTH,
@@ -22,21 +25,24 @@ const UsersUpdateUsernameForm: React.FC<UsersUpdateUsernameFormProps> = ({
   userId,
 }: UsersUpdateUsernameFormProps) => {
   const [uname, setUname] = useState("");
-  const [{ errors }, formAction] = useFormState(handleUpdateUsername, {
-    errors: {},
-  });
+  const [generatedUname, handleGenerateRandomUsernameAction] = useFormState(
+    handleGenerateRandomUsername,
+    "",
+  );
+  const [{ errors }, handleUpdateUsernameAction] = useFormState(
+    handleUpdateUsername,
+    {
+      errors: {},
+    },
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUname(e.target.value);
   };
 
-  const handleRandom = () => {
-    setUname(generateRandomUsername());
-  };
-
   return (
     <>
-      <form action={formAction} className="flex flex-col gap-4">
+      <form action={handleUpdateUsernameAction} className="flex flex-col gap-4">
         <input type="hidden" name="userId" value={userId} />
         <span>Choose your username</span>
         <label className="flex flex-col gap-2">
@@ -56,9 +62,15 @@ const UsersUpdateUsernameForm: React.FC<UsersUpdateUsernameFormProps> = ({
         </label>
         <SubmitButton>Confirm</SubmitButton>
       </form>
-      <Button variant="link" className="self-start pl-0" onClick={handleRandom}>
-        Choose a random username
-      </Button>
+      <form action={handleGenerateRandomUsernameAction}>
+        <SubmitButton
+          variant="link"
+          className="self-start pl-0"
+          onSubmitted={() => setUname(generatedUname)}
+        >
+          Choose a random username
+        </SubmitButton>
+      </form>
     </>
   );
 };

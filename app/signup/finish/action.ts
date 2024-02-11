@@ -11,6 +11,7 @@ import { updateUserUsername } from "@/repositories/user.repository";
 import { ROUTE_USER } from "@/constants/route.constants";
 import { setNewSessionCookies } from "@/helpers/session.helpers";
 import { User } from "@/db/schema";
+import { generateRandomUsername } from "@/helpers/users.helpers";
 
 const signupFinishSchema = z.object({
   userId: z.string(),
@@ -30,32 +31,8 @@ const signupFinishSchema = z.object({
     ),
 });
 
-async function handleUpdateRandomUsername(
-  userId: User["id"],
-  formData: FormData,
-) {
-  const fields = signupFinishSchema.safeParse({
-    username: formData.get("uname"),
-    userId,
-  });
-
-  if (!fields.success) {
-    return {
-      errors: fields.error.flatten().fieldErrors,
-    };
-  }
-
-  await updateUserUsername({
-    id: fields.data.userId,
-    username: fields.data.username,
-  });
-
-  setNewSessionCookies({
-    id: fields.data.userId,
-    username: fields.data.username,
-  });
-
-  redirect(ROUTE_USER);
+async function handleGenerateRandomUsername(_: string) {
+  return generateRandomUsername();
 }
 
 async function handleUpdateUsername(_: unknown, formData: FormData) {
@@ -91,4 +68,4 @@ async function handleUpdateUsername(_: unknown, formData: FormData) {
 
   redirect(ROUTE_USER);
 }
-export { handleUpdateRandomUsername, handleUpdateUsername };
+export { handleGenerateRandomUsername, handleUpdateUsername };
